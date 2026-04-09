@@ -54,3 +54,22 @@ if App.GuiUp:
     App.Gui.activeDocument().activeView().viewAxometric()
 
 print("Modelo 3D generado con éxito con 8 tornillos.")
+
+# 7. EXPORT GUSSET PLATE TO STEP AND STL
+import os
+import Mesh
+import Import
+
+output_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "CAD_output")
+os.makedirs(output_dir, exist_ok=True)
+
+plate_obj = doc.getObject("Gusset_Plate_14mm")
+
+step_path = os.path.join(output_dir, "Gusset_Plate_14mm.step")
+stl_path  = os.path.join(output_dir, "Gusset_Plate_14mm.stl")
+
+Import.export([plate_obj], step_path)
+Mesh.export([plate_obj], stl_path)
+
+print(f"STEP saved: {step_path}")
+print(f"STL  saved: {stl_path}")

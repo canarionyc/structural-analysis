@@ -1,0 +1,6 @@
+format:
+  html:
+    toc: true          # (Optional) Adds a table of contents to the HTML
+  pdf:
+    pdf-engine: lualatex
+    keep-tex: false    # Cleans up temp LaTeX files

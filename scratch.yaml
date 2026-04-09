@@ -1,0 +1,15 @@
+format:
+  html:
+    toc: true          # (Optional) Adds a table of contents to the HTML
+  pdf:
+    pdf-engine: lualatex
+    keep-tex: false    # Cleans up temp LaTeX files
+
+format:
+  pdf:
+    echo: false          # Hides all code cells
+    warning: false       # Hides python warnings
+    output: true         # Shows the results/plots
+    pdf-engine: lualatex
+    # mainfont: Arial
+    keep-tex: false      # Cleans up temp LaTeX files

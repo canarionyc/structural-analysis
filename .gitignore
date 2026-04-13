@@ -220,3 +220,8 @@ __marimo__/
 *.tex
 *.pdf
 /notebooks/cercha_files
+*.ipynb
+*.jpg
+*.docx
+*.asv
+*.bat~

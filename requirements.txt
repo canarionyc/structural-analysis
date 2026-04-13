@@ -8,3 +8,5 @@ cadquery
 python-dotenv
 rhino
 rhinoinside
+pyprojroot
+system

@@ -225,3 +225,10 @@ __marimo__/
 *.docx
 *.asv
 *.bat~
+*.gz
+*.aux
+*.fdb_latexmk
+*.fls
+*.out
+*.xdv
+*.xlsx

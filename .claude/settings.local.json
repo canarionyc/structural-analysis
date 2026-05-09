@@ -2,7 +2,18 @@
   "permissions": {
     "allow": [
       "WebSearch",
-      "WebFetch(domain:plugins.jetbrains.com)"
+      "WebFetch(domain:plugins.jetbrains.com)",
+      "Bash(python -c \"import json,sys; nb=json.load\\(sys.stdin\\); [print\\(o\\) for o in nb['cells'][0]['outputs']]\")",
+      "Bash(python3 -c ':*)",
+      "Bash(python3.exe -c \"import json; nb=open\\('Tema 10 - Pandeo/T10 Ejercicio Propuesto.ipynb'\\).read\\(\\); print\\(nb[:200]\\)\")",
+      "Bash(py -c \"import json; nb=open\\('Tema 10 - Pandeo/T10 Ejercicio Propuesto.ipynb'\\).read\\(\\); print\\(nb[:500]\\)\")",
+      "Read(//usr/**)",
+      "Read(//usr/local/**)",
+      "Bash(jupyter --config-dir)",
+      "Bash(jupyter --paths)",
+      "Read(//c/Users/tglla/AppData/Roaming/jupyter//**)",
+      "Read(//c/Users/tglla/AppData/Local/**)",
+      "Bash(xargs grep:*)"
     ]
   }
 }

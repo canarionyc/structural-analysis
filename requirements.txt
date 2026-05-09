@@ -10,3 +10,6 @@ rhino
 rhinoinside
 pyprojroot
 system
+ipywidgets
+ipympl
+pandas

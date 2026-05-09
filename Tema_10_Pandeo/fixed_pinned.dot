@@ -1,0 +1,90 @@
+digraph G {
+    // Styling
+    rankdir=TB; // Top to Bottom flow
+    nodesep=0.5; // Separation between nodes
+    node [fontname="Arial", fontsize=10, shape=box, style="filled", color="#E0E0E0", fixedsize=false];
+    edge [fontname="Arial", fontsize=9];
+
+    // --- INPUT DATA ---
+    subgraph cluster_inputs {
+        label = "Datos de Entrada (Inputs)";
+        style="filled"; color="#F5F5F5";
+        
+        NEd [label="Carga de Diseño (N_Ed)\n490 kN", shape=parallelogram, fillcolor="#FFECB3"];
+        L [label="Longitud (L)\n3.45 m", shape=parallelogram, fillcolor="#FFECB3"];
+        FY [label="Acero (f_y, E)\n275 MPa, 210 GPa", shape=parallelogram, fillcolor="#FFECB3"];
+        BC [label="Condiciones de Contorno\nEmpotrado-Articulado (CTE)", shape=parallelogram, fillcolor="#FFECB3"];
+    }
+
+    // --- PRE-CALCULATIONS ---
+    START [label="INICIO", shape=oval, style=filled, fillcolor="#C8E6C9"];
+    
+    CALC_LK [label="1. Determinar Longitud de Pandeo\nL_k = 0.7 * L (CTE T6.1)\nL_k = 2.415 m"];
+    
+    CATALOG [label="Catálogo de Perfiles Comerciales\n(Array/Tabla con listado de D x t)", shape=cylinder, fillcolor="#BBDEFB"];
+
+    // --- ITERATIVE LOOP / COMPUTATIONAL ENGINE ---
+    // Start cluster for loop for clarity
+    subgraph cluster_loop {
+        label = "Motor de Cálculo (Iteración o Barrido de Catálogo)";
+        style="dashed"; color="#9E9E9E";
+        
+        SELECT_P [label="2. Seleccionar Siguiente Perfil (P)\n(ej. Empezar por el más ligero)", fillcolor="#FFF9C4"];
+        
+        GET_PROP [label="3. Leer Propiedades Geométricas (Tabla)\nÁrea (A)\nRadio de Giro (i)"];
+
+        subgraph cluster_physics {
+            label = "Física de Pandeo (Ayrton-Perry)";
+            style="filled"; color="#FFFFFF";
+
+            CALC_LAM [label="4. Calcular Esbeltez Reducida (λ̄)\nλ̄ = √ (A * f_y / N_cr)\n(Se simplifica a: L_k/i * CTE_acero)"];
+            
+            CURVE [label="5. Seleccionar Curva de Pandeo (CTE)\nImperfección (α) = 0.21 (Curva a)", shape=diamond, fillcolor="#E1BEE7"];
+            
+            CALC_CHI [label="6. Calcular Factor de Reducción (χ)\nSolve Ayrton-Perry Quadratic\nχ = f(λ̄, α)"];
+        }
+
+        CALC_NBRD [label="7. Calcular Resistencia de Diseño (N_b,Rd)\nN_b,Rd = χ * A * (f_y / γ_s)", fillcolor="#FFF9C4"];
+        
+        CHECK [label="8. ¿Verificación de Seguridad?\n¿N_b,Rd ≥ NEd?", shape=diamond, fillcolor="#FFCDD2"];
+    }
+
+    // --- SOLUTIONS & OPTIMIZATION ---
+    FAIL [label="No Cumple\n(Pandeo prematuro)", shape=parallelogram, fillcolor="#FFAB91"];
+    
+    OPTIM [label="9. Optimización (Mínimo Peso)\n¿Es este el perfil más ligero\nque cumple la condición?", shape=diamond, fillcolor="#FFCDD2"];
+    
+    TRY_LIGHTER [label="Intentar perfil más ligero", fillcolor="#FFF9C4"];
+    
+    SUCCESS [label="SOLUCIÓN ÓPTIMA\n(ej. #139.7 x 3.2)", shape=note, style=filled, fillcolor="#C8E6C9", fontsize=11];
+    
+    END [label="FIN", shape=oval, style=filled, fillcolor="#C8E6C9"];
+
+    // --- CONNECTIONS (FLOW) ---
+    START -> NEd;
+    NEd -> L -> FY -> BC [style=invis]; // Force cluster layout
+    
+    BC -> CALC_LK;
+    CATALOG -> SELECT_P;
+    CALC_LK -> SELECT_P;
+    
+    SELECT_P -> GET_PROP;
+    GET_PROP -> CALC_LAM;
+    CALC_LAM -> CURVE;
+    CURVE -> CALC_CHI;
+    CALC_CHI -> CALC_NBRD;
+    CALC_NBRD -> CHECK;
+    
+    // Condition handling
+    CHECK -> FAIL [label="NO (Fails)"];
+    CHECK -> OPTIM [label="SÍ (Passes)"];
+    
+    FAIL -> SELECT_P [label="Siguiente perfil\nMÁS pesado (A++ / i++)"];
+    
+    OPTIM -> TRY_LIGHTER [label="NO (No es el óptimo,\naún es muy pesado)"];
+    OPTIM -> SUCCESS [label="SÍ (Es el óptimo)"];
+    
+    TRY_LIGHTER -> SELECT_P [label="Siguiente perfil\nMÁS ligero (A-- / i--)"];
+    
+    SUCCESS -> END;
+}

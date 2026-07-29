@@ -7,9 +7,34 @@ This script demonstrates the derivation of beam deflection and slope formulas.
 # Import common structural analysis functionality
 import sys
 import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from autoimport import import_all
-import_all()
+
+#%% define symbols
+import numpy as np
+import matplotlib.pyplot as plt
+import sympy as sp
+# Configure sympy for better output
+sp.init_printing(order='lex')
+
+# import pint
+
+# Geometric symbols
+x, y, z = sp.symbols('x y z', real=True)
+L, a, b, h = sp.symbols('L a b h', positive=True)
+
+# Material properties
+E, G, nu = sp.symbols('E G nu', positive=True)  # Young's modulus, shear modulus, Poisson's ratio
+
+# Section properties
+I, A, J = sp.symbols('I A J', positive=True)  # Moment of inertia, area, torsional constant
+
+# Loads and reactions
+P, q, M = sp.symbols('P q M', real=True)  # Point load, distributed load, moment
+R_A, R_B, M_A, M_B = sp.symbols('R_A R_B M_A M_B', real=True)  # Reactions
+#%% autoimport
+# os.path.dirname(os.path.dirname(os.path.abspath(__name__)))
+# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__name__))))
+# from autoimport import import_all
+# import_all()
 
 # %% Setup symbols and problem definition
 print("=== Euler Beam Point Load Analysis ===")
@@ -30,8 +55,8 @@ print("\n=== Reaction Analysis ===")
 # R_A + R_B = P
 # R_A * L = P * a  (taking moments about B)
 
-R_A_formula = P * a / L
-R_B_formula = P * b / L
+R_A_formula = P * b / L
+R_B_formula = P * a / L
 
 print(f"Reaction at A: R_A = {R_A_formula}")
 print(f"Reaction at B: R_B = {R_B_formula}")
@@ -48,10 +73,10 @@ M2 = R_A_formula * x - P * (x - a)
 print(f"Moment for a ≤ x ≤ L: M2(x) = {M2}")
 
 # %% Integration to find slope and deflection
-print("\n=== Integration for Slope and Deflection ===")
+print("\n=== Integration for Slope  ===")
 
 # Define integration constants
-C1, C2, C3, C4 = sp.symbols('C1 C2 C3 C4')
+C1, C2 = sp.symbols('C1 C2')
 
 # Integrate EI * v''(x) = M(x) to get slope
 # For 0 <= x < a
@@ -62,7 +87,9 @@ print(f"Slope v1'(x) = {v1_prime}")
 v2_prime = sp.integrate(M2 / (E * I), x) + C2
 print(f"Slope v2'(x) = {v2_prime}")
 
-# Integrate again to get deflection
+#%% Integrate again to get deflection
+print("\n=== Integration for Slope and Deflection ===")
+C3, C4 = sp.symbols('C3 C4')
 v1 = sp.integrate(v1_prime, x) + C3
 v2 = sp.integrate(v2_prime, x) + C4
 
@@ -92,34 +119,33 @@ for i, eq in enumerate(eqs, 1):
 # %% Solve for integration constants
 print("\n=== Solving for Integration Constants ===")
 
-try:
-    sol = sp.solve(eqs, (C1, C2, C3, C4), dict=True)[0]
-    print("Solution found:")
-    for const, value in sol.items():
-        print(f"{const} = {value}")
+
+sol = sp.solve(eqs, (C1, C2, C3, C4), dict=True)[0]
+sp.pprint(sol)
+print("Solution found:")
+for const, value in sol.items():
+    print(f"{const} = {value}")
         
-    # %% Calculate slope at left end
-    print("\n=== Slope at Left End ===")
+# %% Calculate slope at left end
+print("\n=== Slope at Left End ===")
+
+# Slope at left end (x=0)
+theta_A = v1_prime.subs(C1, sol[C1]).subs(x, 0)
+theta_A = sp.simplify(theta_A.subs(b, L - a))
+
+print("θ_A (slope at left end) =")
+sp.pprint(theta_A)
+
+# Compare with known formula
+theta_A_formula = P*a*b*(L+b)/(6*E*I*L)
+print(f"\nCompare to formula: P*a*b*(L+b)/(6*E*I*L)")
+print(f"Formula gives: {theta_A_formula}")
+
+# Check if they're equal
+difference = sp.simplify(theta_A - theta_A_formula.subs(b, L - a))
+print(f"Difference: {difference}")
+print(f"Proof correct: {difference == 0}")
     
-    # Slope at left end (x=0)
-    theta_A = v1_prime.subs(C1, sol[C1]).subs(x, 0)
-    theta_A = sp.simplify(theta_A.subs(b, L - a))
-    
-    print("θ_A (slope at left end) =")
-    sp.pprint(theta_A)
-    
-    # Compare with known formula
-    theta_A_formula = P*a*b*(L+b)/(6*E*I*L)
-    print(f"\nCompare to formula: P*a*b*(L+b)/(6*E*I*L)")
-    print(f"Formula gives: {theta_A_formula}")
-    
-    # Check if they're equal
-    difference = sp.simplify(theta_A - theta_A_formula.subs(b, L - a))
-    print(f"Difference: {difference}")
-    print(f"Proof correct: {difference == 0}")
-    
-except Exception as e:
-    print(f"Error solving system: {e}")
-    print("This might be due to the complexity of the symbolic system.")
+
 
 print("\n=== Analysis Complete ===")

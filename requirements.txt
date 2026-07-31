@@ -13,3 +13,4 @@ system
 ipywidgets
 ipympl
 pandas
+jupyter-client

@@ -1,11 +1,25 @@
 %% Define Truss Geometry
 clearvars
 % Node coordinates [x, y]
-nodes = [0 0; 2.5 3; 5 0; 7.5 3; 10 0; 12.5 3; 15 0];
+nodes = [
+	0 0; 
+	2.5 3; 
+	5 0; 
+	7.5 3; 
+	10 0; 
+	12.5 3; 
+	15 0];
 
 %% Define Loads and Supports
 % Applied nodal loads [Fx, Fy]
-loads = [0 0; 0 -200; 0 -150; 0 -200; 0 -150; 0 -200; 0 0];
+loads = [
+	0 0; 
+	0 -200; 
+	0 -150; 
+	0 -200; 
+	0 -150; 
+	0 -200; 
+	0 0];
 
 % Support conditions (1 = fixed, 0 = free)
 % [dx, dy]

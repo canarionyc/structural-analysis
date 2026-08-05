@@ -97,5 +97,3 @@ fprintf('R1y (Node 1, Y-axis): %8.2f\n', reactions(1));
 fprintf('R4x (Node 4, X-axis): %8.2f\n', reactions(2));
 fprintf('R4y (Node 4, Y-axis): %8.2f\n', reactions(3));
 
-%%
-plotdisp

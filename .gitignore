@@ -236,3 +236,6 @@ __marimo__/
 *.nb
 *.ipynb
 *.ipynb
+/resources
+*.xml
+*.xml

@@ -1,5 +1,5 @@
-%% Truss Geometry and Node Definitions
-% Coordinates [x, y]
+%[text] ## Truss Geometry and Node Definitions
+%[text] Coordinates \[x, y\]
 nodes = [ 0.0, 0.0;   % Node 1: Bottom Left
           5.0, 0.0;   % Node 2: Bottom Mid-Left
          10.0, 0.0;   % Node 3: Bottom Mid-Right
@@ -7,9 +7,9 @@ nodes = [ 0.0, 0.0;   % Node 1: Bottom Left
           2.5, 3.0;   % Node 5: Top Left
           7.5, 3.0;   % Node 6: Top Center
          12.5, 3.0 ]; % Node 7: Top Right
-
-%% Bar Connectivity (Elements)
-% Defined by [Start_Node, End_Node]
+%%
+%[text] ## Bar Connectivity (Elements)
+%[text] Defined by \[Start\_Node, End\_Node\]
 bars = [ 1, 2;  % Bar 1
          2, 3;  % Bar 2
          3, 4;  % Bar 3
@@ -25,17 +25,17 @@ bars = [ 1, 2;  % Bar 1
 num_nodes = size(nodes, 1);
 num_bars = size(bars, 1);
 num_unknowns = num_bars + 3;
-
-%% External Loads (Applied Forces)
-% Format: [Fx1; Fy1; Fx2; Fy2; ... ; Fx7; Fy7]
+%%
+%[text] ## External Loads (Applied Forces)
+%[text] Format: \[Fx1; Fy1; Fx2; Fy2; ... ; Fx7; Fy7\]
 P_applied = zeros(num_nodes * 2, 1);
 P_applied(2*5) = -200; % Node 5, Fy
 P_applied(2*6) = -200; % Node 6, Fy
 P_applied(2*7) = -200; % Node 7, Fy
 P_applied(2*2) = -150; % Node 2, Fy
 P_applied(2*3) = -150; % Node 3, Fy
-
-%% Equilibrium Matrix Setup [C]
+%%
+%[text] ## Equilibrium Matrix Setup \[C\]
 C = zeros(num_nodes * 2, num_unknowns);
 
 for i = 1:num_bars
@@ -59,13 +59,13 @@ end
 C(2*1, num_bars + 1) = 1; % R1y
 C(2*4 - 1, num_bars + 2) = 1; % R4x
 C(2*4, num_bars + 3) = 1; % R4y
-
-%% Solve the Linear System
+%%
+%[text] ## Solve the Linear System
 X = C \ (-P_applied);
 axiles = X(1:num_bars);
 reactions = X(num_bars+1:end);
-
-%% Print Results in Console
+%%
+%[text] ## Print Results in Console
 disp('--- ESFUERZOS AXILES ---');
 disp('(+ = Tracción, - = Compresión)');
 for i = 1:num_bars
@@ -77,8 +77,8 @@ disp('--- REACCIONES EN LOS APOYOS ---');
 fprintf('R1y (Nodo 1, Eje Y): %8.2f\n', reactions(1));
 fprintf('R4x (Nodo 4, Eje X): %8.2f\n', reactions(2));
 fprintf('R4y (Nodo 4, Eje Y): %8.2f\n', reactions(3));
-
-%% PLOT 1: Geometry (STABIL "plotelem" Equivalent)
+%%
+%[text] ## PLOT 1: Geometry (STABIL "plotelem" Equivalent)
 figure('Name', 'Geometría del Sistema', 'Color', 'w');
 hold on; grid on; axis equal;
 
@@ -100,8 +100,8 @@ title('Geometría Indeformada (Equivalente plotelem)');
 xlabel('Eje X (m)');
 ylabel('Eje Y (m)');
 set(gca, 'FontSize', 11);
-
-%% PLOT 2: Axial Forces (STABIL "plotforces" Equivalent)
+%%
+%[text] ## PLOT 2: Axial Forces (STABIL "plotforces" Equivalent)
 figure('Name', 'Esfuerzos Axiles', 'Color', 'w');
 hold on; axis equal; axis off;
 
@@ -140,3 +140,9 @@ end
 
 % Plot Nodes on top
 plot(nodes(:,1), nodes(:,2), 'ko', 'MarkerFaceColor', 'w', 'MarkerSize', 4);
+
+%[appendix]{"version":"1.0"}
+%---
+%[metadata:view]
+%   data: {"layout":"onright","rightPanelPercent":10.2}
+%---

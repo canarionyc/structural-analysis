@@ -17,7 +17,7 @@ sp.init_printing(order='lex')
 
 # import pint
 
-# Geometric symbols
+#%% Geometric symbols
 x, y, z = sp.symbols('x y z', real=True)
 L, a, b, h = sp.symbols('L a b h', positive=True)
 
@@ -53,23 +53,24 @@ print("\n=== Reaction Analysis ===")
 
 # For equilibrium: Sum of vertical forces = 0, Sum of moments = 0
 # R_A + R_B = P
-# R_A * L = P * a  (taking moments about B)
+# R_A * L = P * b  (taking moments about B)
 
-R_A_formula = P * b / L
-R_B_formula = P * a / L
+# help(sp.solve)
+soln1=sp.solve([R_A + R_B - P, R_A * L - P * b], [R_A, R_B])
+print(soln1)
 
-print(f"Reaction at A: R_A = {R_A_formula}")
-print(f"Reaction at B: R_B = {R_B_formula}")
+print(f"Reaction at A: R_A = {soln1[R_A]}")
+print(f"Reaction at B: R_B = {soln1[R_B]}")
 
 # %% Moment function definition
 print("\n=== Moment Functions ===")
 
 # For 0 <= x < a: M(x) = R_A * x
-M1 = R_A_formula * x
+M1 = R_A * x
 print(f"Moment for 0 ≤ x < a: M1(x) = {M1}")
 
 # For a <= x <= L: M(x) = R_A * x - P * (x - a)
-M2 = R_A_formula * x - P * (x - a)
+M2 = R_A * x - P * (x - a)
 print(f"Moment for a ≤ x ≤ L: M2(x) = {M2}")
 
 # %% Integration to find slope and deflection
@@ -120,23 +121,28 @@ for i, eq in enumerate(eqs, 1):
 print("\n=== Solving for Integration Constants ===")
 
 
-sol = sp.solve(eqs, (C1, C2, C3, C4), dict=True)[0]
-sp.pprint(sol)
+soln2 = sp.solve(eqs, (C1, C2, C3, C4), dict=True)[0]
+sp.pprint(soln2)
 print("Solution found:")
-for const, value in sol.items():
+for const, value in soln2.items():
     print(f"{const} = {value}")
-        
+
+#%% full soln
+# soln={k: v.subs(soln1).subs(soln2) for k, v in soln2.items()}
+
+v1_prime.subs(soln2).subs(soln1).subs(b,L-a).simplify()
 # %% Calculate slope at left end
+
 print("\n=== Slope at Left End ===")
 
 # Slope at left end (x=0)
-theta_A = v1_prime.subs(C1, sol[C1]).subs(x, 0)
+theta_A = v1_prime.subs(C1, soln2[C1]).subs(x, 0)
 theta_A = sp.simplify(theta_A.subs(b, L - a))
 
 print("θ_A (slope at left end) =")
 sp.pprint(theta_A)
 
-# Compare with known formula
+# %% Compare with known formula
 theta_A_formula = P*a*b*(L+b)/(6*E*I*L)
 print(f"\nCompare to formula: P*a*b*(L+b)/(6*E*I*L)")
 print(f"Formula gives: {theta_A_formula}")

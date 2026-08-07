@@ -239,3 +239,6 @@ __marimo__/
 /resources
 *.xml
 *.xml
+*.mlx
+doering-andreas-Stepped-Euler-Bernoulli-Beam/CITATION.cff
+doering-andreas-Stepped-Euler-Bernoulli-Beam/LICENSE

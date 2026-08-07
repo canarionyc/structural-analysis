@@ -1,4 +1,4 @@
-%% Master Plot: Geometry, Supports, and Axial Forces
+%% Plotting
 figure('Name', 'Análisis de Cercha (Geometría y Esfuerzos)', 'Color', 'w');
 hold on; grid on; axis equal;
 

@@ -1,14 +1,28 @@
-# %% Euler Beam Point Load Analysis
-"""
-Analysis of a simply supported beam with a point load using symbolic computation.
-This script demonstrates the derivation of beam deflection and slope formulas.
-"""
+# ---
+# jupyter:
+#   jupytext:
+#     formats: ipynb,py:percent
+#     text_representation:
+#       extension: .py
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.19.5
+#   kernelspec:
+#     display_name: Python 3 (ipykernel)
+#     language: python
+#     name: python3
+# ---
 
+# %% [markdown]
+# # Simply supported Euler Beam under Point Load
+# %% [markdown]
+# Analysis of a simply supported beam with a point load using symbolic computation.
+# This script demonstrates the derivation of beam deflection and slope formulas.
+# %%
 # Import common structural analysis functionality
 import sys
 import os
-
-#%% define symbols
+# %%
 import numpy as np
 import matplotlib.pyplot as plt
 import sympy as sp
@@ -16,8 +30,7 @@ import sympy as sp
 sp.init_printing(order='lex')
 
 # import pint
-
-#%% Geometric symbols
+# %%
 x, y, z = sp.symbols('x y z', real=True)
 L, a, b, h = sp.symbols('L a b h', positive=True)
 
@@ -29,14 +42,14 @@ I, A, J = sp.symbols('I A J', positive=True)  # Moment of inertia, area, torsion
 
 # Loads and reactions
 P, q, M = sp.symbols('P q M', real=True)  # Point load, distributed load, moment
-R_A, R_B, M_A, M_B = sp.symbols('R_A R_B M_A M_B', real=True)  # Reactions
-#%% autoimport
+R_A, R_B= sp.symbols('R_A R_B', real=True)  # Reactions
+# %%
 # os.path.dirname(os.path.dirname(os.path.abspath(__name__)))
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__name__))))
 # from autoimport import import_all
 # import_all()
 
-# %% Setup symbols and problem definition
+# %%
 print("=== Euler Beam Point Load Analysis ===")
 print("Analyzing a simply supported beam with point load P at distance 'a' from left support")
 
@@ -47,8 +60,7 @@ print(f"Constraint: {constraint}")
 # Define the relationship b = L - a
 b_relation = sp.Eq(b, L - a)
 print(f"Relationship: {b_relation}")
-
-# %% Reaction calculations
+# %%
 print("\n=== Reaction Analysis ===")
 
 # For equilibrium: Sum of vertical forces = 0, Sum of moments = 0
@@ -61,8 +73,7 @@ print(soln1)
 
 print(f"Reaction at A: R_A = {soln1[R_A]}")
 print(f"Reaction at B: R_B = {soln1[R_B]}")
-
-# %% Moment function definition
+# %%
 print("\n=== Moment Functions ===")
 
 # For 0 <= x < a: M(x) = R_A * x
@@ -72,8 +83,7 @@ print(f"Moment for 0 ≤ x < a: M1(x) = {M1}")
 # For a <= x <= L: M(x) = R_A * x - P * (x - a)
 M2 = R_A * x - P * (x - a)
 print(f"Moment for a ≤ x ≤ L: M2(x) = {M2}")
-
-# %% Integration to find slope and deflection
+# %%
 print("\n=== Integration for Slope  ===")
 
 # Define integration constants
@@ -87,8 +97,7 @@ print(f"Slope v1'(x) = {v1_prime}")
 # For a <= x <= L
 v2_prime = sp.integrate(M2 / (E * I), x) + C2
 print(f"Slope v2'(x) = {v2_prime}")
-
-#%% Integrate again to get deflection
+# %%
 print("\n=== Integration for Slope and Deflection ===")
 C3, C4 = sp.symbols('C3 C4')
 v1 = sp.integrate(v1_prime, x) + C3
@@ -97,7 +106,7 @@ v2 = sp.integrate(v2_prime, x) + C4
 print(f"Deflection v1(x) = {v1}")
 print(f"Deflection v2(x) = {v2}")
 
-# %% Apply boundary conditions
+# %%
 print("\n=== Boundary Conditions ===")
 
 # Boundary conditions:
@@ -117,7 +126,7 @@ print("Boundary condition equations:")
 for i, eq in enumerate(eqs, 1):
     print(f"{i}. {eq} = 0")
 
-# %% Solve for integration constants
+# %%
 print("\n=== Solving for Integration Constants ===")
 
 
@@ -127,11 +136,11 @@ print("Solution found:")
 for const, value in soln2.items():
     print(f"{const} = {value}")
 
-#%% full soln
+# %%
 # soln={k: v.subs(soln1).subs(soln2) for k, v in soln2.items()}
 
 v1_prime.subs(soln2).subs(soln1).subs(b,L-a).simplify()
-# %% Calculate slope at left end
+# %%
 
 print("\n=== Slope at Left End ===")
 
@@ -142,7 +151,7 @@ theta_A = sp.simplify(theta_A.subs(b, L - a))
 print("θ_A (slope at left end) =")
 sp.pprint(theta_A)
 
-# %% Compare with known formula
+# %%
 theta_A_formula = P*a*b*(L+b)/(6*E*I*L)
 print(f"\nCompare to formula: P*a*b*(L+b)/(6*E*I*L)")
 print(f"Formula gives: {theta_A_formula}")

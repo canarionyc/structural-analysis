@@ -1,4 +1,5 @@
 #%% setup
+
 from sympy.physics.continuum_mechanics.beam import Beam
 from sympy import symbols
 

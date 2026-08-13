@@ -2,11 +2,11 @@
 # biempotrado con una longitud de 6.90m. El perfil elegido es un tubo de chapa simple, laminado
 # en caliente S‐275‐JR gamma_c=1.4 y gamma_s=1.05.
 
-from pyCTESEA.core_modules.steel_bar import SteelBar
-from pyCTESEA.core_modules.materials import SteelMaterial
-from pyCTESEA.core_modules.supports import SupportType
-from pyCTESEA.cross_sections.chs import CircularHollowSection
-from pyCTESEA.core_modules.checks import DBSEACheck
+from core_modules import SteelBar
+from core_modules.materials import SteelMaterial
+from core_modules.supports import SupportType
+from cross_sections.chs import CircularHollowSection
+from core_modules.checks import DBSEACheck
 
 # %% TEST: DIMENSIONAMIENTO DE SOPORTE BIEMPOTRADO
 # Definición de la carga y factores

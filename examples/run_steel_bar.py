@@ -1,7 +1,7 @@
 # %% IMPORTS
-from pyCTESEA.core_modules.steel_bar import SteelBar
+from core_modules import SteelBar
 
-from pyCTESEA.cross_sections.chs import CircularHollowSection
+from cross_sections.chs import CircularHollowSection
 
 # %% EXAMPLE OF USAGE
 # Define a cantilever beam (Empotrado-Libre)

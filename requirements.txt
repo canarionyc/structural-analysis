@@ -14,3 +14,4 @@ ipywidgets
 ipympl
 pandas
 jupyter-client
+pynite

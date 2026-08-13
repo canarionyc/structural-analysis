@@ -45,9 +45,9 @@ if __name__ == "__main__":
     if src_path not in sys.path:
         sys.path.insert(0, src_path)
 
-    from ..core_modules.materials import SteelMaterial
-    from ..core_modules.steel_bar import SteelBar
-    from ..core_modules.checks import DBSEACheck
+    from core_modules import SteelMaterial
+    from core_modules.steel_bar import SteelBar
+    from core_modules import DBSEACheck
 
     # Recreating the exact problem conditions
     material = SteelMaterial(grade="S275")

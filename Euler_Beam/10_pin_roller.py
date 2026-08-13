@@ -39,25 +39,31 @@ print(b.load)
 #%%
 help(SingularityFunction)
 #%% 3. Context Value: JSON-Safe Parameter Serialization
-import json
-
-# Keep keys as strings to make it compatible with json.dumps()
-params_dict = {
-    "L": 10.0,
-    "E": 2e11,  # Young's modulus (Pa)
-    "I": 1e-4   # Moment of inertia (m^4)
-}
-
-# Safely save to JSON (e.g., storing the state from a UI or database)
-json_data = json.dumps(params_dict)
-print("Serialized Parameters:", json_data)
+# import json
+#
+# # Keep keys as strings to make it compatible with json.dumps()
+# params_dict = {
+#     "L": 10.0,
+#     "E": 2e11,  # Young's modulus (Pa)
+#     "I": 1e-4   # Moment of inertia (m^4)
+# }
+#
+# # Safely save to JSON (e.g., storing the state from a UI or database)
+# json_data = json.dumps(params_dict)
+# print("Serialized Parameters:", json_data)
 
 # %% Reload and safely convert string keys back to SymPy symbols
-import json
+import json5
 from sympy import sympify, pprint
 
+import os
+os.getcwd()
+params_json=os.path.join("data","params_si.json")
+os.path.exists(params_json)
 # 1. Reload the JSON
-reloaded_params = json.loads(json_data)
+help(json5.load)
+with open(params_json, 'r', encoding="utf-8") as f:
+    reloaded_params = json5.load(f)
 pprint(reloaded_params)
 
 

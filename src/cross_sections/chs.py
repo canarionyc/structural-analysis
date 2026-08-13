@@ -1,5 +1,4 @@
 # %% IMPORTS
-import math
 from ..cross_sections.base_classes import CrossSection
 
 # %% UPDATED HOLLOW SECTION WITH BUCKLING CURVE
@@ -50,9 +49,9 @@ if __name__ == "__main__":
     }
     LANG = "EN"
     from ..cross_sections.chs import CircularHollowSection
-    from ..core_modules.materials import SteelMaterial
-    from ..core_modules.supports import SupportType
-    from ..core_modules.steel_bar import SteelBar
+    from core_modules import SteelMaterial
+    from core_modules import SupportType
+    from core_modules.steel_bar import SteelBar
 
     # 1. Define Material and Section (Cold-formed CHS)
     steel = SteelMaterial("S275")

@@ -48,7 +48,7 @@ if __name__ == "__main__":
     # %% IMPORTS
     from ..core_modules.steel_bar import SteelBar
     from ..core_modules.materials import SteelMaterial
-    from ..cross_sections.chs import CircularHollowSection
+    from cross_sections.chs import CircularHollowSection
 
     # %% EXAMPLE OF USAGE
     # Define a cantilever beam (Empotrado-Libre)

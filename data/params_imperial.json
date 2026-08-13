@@ -1,0 +1,8 @@
+{
+  "L": 32.808, // ft (converted from 10.0 m)
+  "a": 13.123, // ft (converted from 4.0 m)
+  "b": 19.685, // ft (converted from 6.0 m)
+  "P": 0.2248, // kips (assuming original 1000.0 was in Newtons. 1 kip = 4448.22 N)
+  "E": 4.177e6,  // ksf - kips per square foot (converted from 2e11 Pa). Equivalent to ~29,000 ksi.
+  "I": 1.159e-2  // ft^4 - (converted from 1e-4 m^4). Equivalent to ~240.25 in^4.
+}

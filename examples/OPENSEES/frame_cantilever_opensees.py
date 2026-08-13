@@ -4,7 +4,7 @@
 #  2D Elastic Cantilever Beam
 #  Single Nodal Load, Static Analysis
 
-import openseespy.opensees as ops
+import openseespywin.opensees as ops
 import opsvis as opsv
 import matplotlib.pyplot as plt
 help(ops)
@@ -16,7 +16,7 @@ help(ops.OpenSeesParameter)
 ops.wipe()
 
 # Create ModelBuilder: 2 dimensions, 3 DOFs per node (X, Y, Theta_Z)
-help(ops.model)
+
 ops.model("BasicBuilder", "-ndm", 2, "-ndf", 3)
 
 # Define Geometry (Length = 100 inches, split into 4 elements)
@@ -31,9 +31,9 @@ ops.node(5, 100.0, 0.0)
 ops.fix(1, 1, 1, 1)
 
 # Define Material and Section Properties (e.g., Steel)
-A = 10.0      # Cross-sectional Area
-E = 29000.0   # Young's Modulus (Mpa)
-I = 200.0     # Moment of Inertia
+A = 10.0      # Cross-sectional Area (in^2)
+E = 29000.0   # Young's Modulus (ksi)
+I = 200.0     # Moment of Inertia (in^2)
 
 # Define Geometric Transformation (Linear for small deflections)
 transfTag = 1

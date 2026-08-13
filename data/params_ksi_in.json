@@ -1,0 +1,23 @@
+{
+  "project": "Simple Beam",
+  "dimensions": 2,
+  "materials": [
+    { "id": 1, "name": "Steel", "E": 29000.0, "type": "elastic" }
+  ],
+  "sections": [
+    { "id": 1, "A": 10.0, "I": 200.0, "material_id": 1 }
+  ],
+  "nodes": [
+    { "id": 1, "coords": [0.0, 0.0, 0.0], "fixity": [1, 1, 1] },
+    { "id": 2, "coords": [25.0, 0.0, 0.0], "fixity": [0, 0, 0] },
+    { "id": 3, "coords": [50.0, 0.0, 0.0], "fixity": [0, 0, 0] },
+    { "id": 4, "coords": [75.0, 0.0, 0.0], "fixity": [0, 0, 0] },
+    { "id": 5, "coords": [100.0, 0.0, 0.0], "fixity": [0, 0, 0] }
+  ],
+  "elements": [
+    { "id": 1, "type": "beam", "nodes": [1, 2], "section_id": 1 },
+    { "id": 2, "type": "beam", "nodes": [2, 3], "section_id": 1 },
+    { "id": 3, "type": "beam", "nodes": [3, 4], "section_id": 1 },
+    { "id": 4, "type": "beam", "nodes": [4, 5], "section_id": 1 }
+  ]
+}

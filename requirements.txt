@@ -15,3 +15,7 @@ ipympl
 pandas
 jupyter-client
 pynite
+openseespy
+openseespy
+openseespywin
+opsvis

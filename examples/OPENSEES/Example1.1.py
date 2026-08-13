@@ -37,9 +37,11 @@ print(os.getcwd())
 
 # from openseespywin.opensees import *
 
-import openseespy.opensees as ops
-help(ops)
+import openseespywin.opensees as ops
+
+# import openseespy
 # from openseespy.opensees import *
+
 
 # endregion
 
@@ -120,7 +122,7 @@ ops.algorithm("Linear")
 # create the integration scheme, the LoadControl scheme using steps of 1.0
 ops.integrator("LoadControl", 1.0)
 
-# create the analysis object 
+# create the analysis object
 ops.analysis("Static")
 
 
@@ -219,7 +221,7 @@ opsv.plot_loads_2d(
     False               # ax: Matplotlib axis override
 )
 
-opsv.plt.show()
+# opsv.plt.show()
 plt.show()
 
 # 3. Plot the Axial Forces! (Red = Tension, Blue = Compression)

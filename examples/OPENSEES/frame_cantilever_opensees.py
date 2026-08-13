@@ -7,15 +7,16 @@
 import openseespy.opensees as ops
 import opsvis as opsv
 import matplotlib.pyplot as plt
-
+help(ops)
 
 #%% params setup
-
+help(ops.OpenSeesParameter)
 # %% 1. MODEL GENERATION
 
 ops.wipe()
 
 # Create ModelBuilder: 2 dimensions, 3 DOFs per node (X, Y, Theta_Z)
+help(ops.model)
 ops.model("BasicBuilder", "-ndm", 2, "-ndf", 3)
 
 # Define Geometry (Length = 100 inches, split into 4 elements)

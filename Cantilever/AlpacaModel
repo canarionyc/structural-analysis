@@ -1,0 +1,76 @@
+model BasicBuilder -ndm 3 -ndf 6
+
+node 1 0 0 0 -mass 0 0 0 0 0 0
+
+node 2 0.5 0 0 -mass 0 0 0 0 0 0
+
+node 3 1 0 0 -mass 0 0 0 0 0 0
+
+node 4 1.5000000000000002 0 0 -mass 0 0 0 0 0 0
+
+node 5 2 0 0 -mass 0 0 0 0 0 0
+
+node 6 2.5 0 0 -mass 0 0 0 0 0 0
+
+node 7 3 0 0 -mass 0 0 0 0 0 0
+
+node 8 3.5 0 0 -mass 0 0 0 0 0 0
+
+node 9 3.9999999999999996 0 0 -mass 0 0 0 0 0 0
+
+node 10 4.5 0 0 -mass 0 0 0 0 0 0
+
+node 11 5 0 0 -mass 0 0 0 0 0 0
+
+fix 1 1 1 1 1 1 1
+
+uniaxialMaterial Elastic 62 200000000000 0 210000000
+
+section Elastic 64 200000000000 0.004398229715025708 1.0830640673250808E-05 1.0830640673250808E-05 80769230000 2.1661281346501616E-05 0.9 0.9
+
+geomTransf Linear 1 0 0 1
+element forceBeamColumn 1 1 2 1 NewtonCotes 64 5 -mass 0.03452610326295181
+
+geomTransf Linear 2 0 0 1
+element forceBeamColumn 2 2 3 2 NewtonCotes 64 5 -mass 0.03452610326295181
+
+geomTransf Linear 3 0 0 1
+element forceBeamColumn 3 3 4 3 NewtonCotes 64 5 -mass 0.03452610326295181
+
+geomTransf Linear 4 0 0 1
+element forceBeamColumn 4 4 5 4 NewtonCotes 64 5 -mass 0.03452610326295181
+
+geomTransf Linear 5 0 0 1
+element forceBeamColumn 5 5 6 5 NewtonCotes 64 5 -mass 0.03452610326295181
+
+geomTransf Linear 6 0 0 1
+element forceBeamColumn 6 6 7 6 NewtonCotes 64 5 -mass 0.03452610326295181
+
+geomTransf Linear 7 0 0 1
+element forceBeamColumn 7 7 8 7 NewtonCotes 64 5 -mass 0.03452610326295181
+
+geomTransf Linear 8 0 0 1
+element forceBeamColumn 8 8 9 8 NewtonCotes 64 5 -mass 0.03452610326295181
+
+geomTransf Linear 9 0 0 1
+element forceBeamColumn 9 9 10 9 NewtonCotes 64 5 -mass 0.03452610326295181
+
+geomTransf Linear 10 0 0 1
+element forceBeamColumn 10 10 11 10 NewtonCotes 64 5 -mass 0.03452610326295181
+
+timeSeries Constant 66 -factor 1
+pattern Plain 66 66 -fact 1 {
+	load 11 -0 -100 -0 0 0 0
+}
+
+recorder mpco recorder.mpco -N  displacement rotation reactionForce reactionMoment -E  force stresses section.force
+
+constraints Transformation
+numberer RCM
+system SparseSPD
+test EnergyIncr 1E-08 10 0 2 
+algorithm ModifiedNewton
+integrator LoadControl 1   
+analysis Static
+analyze 1    
+wipe

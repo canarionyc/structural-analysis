@@ -19,5 +19,26 @@
     { "id": 2, "type": "beam", "nodes": [2, 3], "section_id": 1 },
     { "id": 3, "type": "beam", "nodes": [3, 4], "section_id": 1 },
     { "id": 4, "type": "beam", "nodes": [4, 5], "section_id": 1 }
-  ]
+  ],
+  "patterns": [
+    {
+      "id": 1,
+      "type": "Plain",
+      "time_series": "Linear",
+      "point_loads": [
+        { "node_id": 5, "forces": [0.0, -10.0, 0.0] }
+      ]
+    }
+  ],
+  "analysis": {
+    "system": "BandSPD",
+    "numberer": "RCM",
+    "constraints": "Plain",
+    "algorithm": "Linear",
+    "integrator": {
+      "type": "LoadControl",
+      "step": 1.0
+    },
+    "type": "Static"
+  }
 }

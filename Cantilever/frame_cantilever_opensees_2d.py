@@ -3,7 +3,7 @@
 # -----------------------
 #  2D Elastic Cantilever Beam
 #  Single Nodal Load, Static Analysis
-
+import os
 import openseespywin.opensees as ops
 import opsvis as opsv
 import matplotlib.pyplot as plt

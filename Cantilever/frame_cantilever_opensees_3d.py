@@ -3,10 +3,14 @@
 # -----------------------
 #  2D Elastic Cantilever Beam
 #  Single Nodal Load, Static Analysis
+import os.path
 
 import openseespywin.opensees as ops
 import opsvis as opsv
 import matplotlib.pyplot as plt
+
+from Parcial2.cercha import file_path
+
 # help(ops)
 # dir(ops)
 
@@ -16,11 +20,8 @@ ops.wipe()
 # 3 dimensions, 6 DOFs per node
 ops.model("BasicBuilder", "-ndm", 3, "-ndf", 6)
 
-L=5 # m	A typical 5-meter office floor span.
-Fy=-25_000.0 # N	A 2.5-ton load (a heavy SUV).
-
-
 # Geometry
+L = 5 # m	A typical 5-meter office floor span.
 ops.node(1, 0.0,   0.0, 0.0)
 ops.node(2, L/4,  0.0, 0.0)
 ops.node(3, L/2,  0.0, 0.0)
@@ -30,7 +31,6 @@ ops.node(5, L, 0.0, 0.0)
 # Boundary Conditions (6 DOFs locked)
 ops.fix(1, 1, 1, 1, 1, 1, 1)
 
-L = 5 # m	A typical 5-meter office floor span.
 Fy = -25_000.0 # N	A 2.5-ton load (a heavy SUV).
 # 3D Material and Section Properties
 A = 5000.0*1e-6  # mm² -> m**2	A medium-sized I-Beam.
@@ -100,6 +100,21 @@ print(f"  Fz = {rxn_node1[2]:.2f}")
 print(f"  Mx = {rxn_node1[3]:.2f}")
 print(f"  My = {rxn_node1[4]:.2f}")
 print(f"  Mz = {rxn_node1[5]:.2f}")
+
+
+
+
+# %% Start of recorder generation
+
+node_out= "node_%s.out".format("%y%m%d_%H%M%S")
+
+# create a Recorder object for the nodal displacements at node 4
+ops.recorder("Node", "-file", "example.out", "-time", "-node", 4, "-dof", 1, 2, "disp")
+ops.recorder("Element", "-file", "eleGlobal.out", "-time", "-ele", 1, 2, 3, "forces")
+ops.recorder("Element", "-file", "eleLocal.out", "-time", "-ele", 1, 2, 3, "basicForces")
+
+
+
 
 
 # %% 4. VISUALIZATION

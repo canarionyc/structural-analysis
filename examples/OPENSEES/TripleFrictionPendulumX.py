@@ -1,8 +1,9 @@
 import sys
+import os
 #sys.path.append(r'C:\OpenSees-3.3.0\Win64\bin')
-#import opensees as op
 
-import openseespy.opensees as op 
+
+import openseespywin.opensees as op
 
 # Units: N, m, sec
 # Remove existing model

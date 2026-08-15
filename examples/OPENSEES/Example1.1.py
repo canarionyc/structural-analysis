@@ -8,7 +8,7 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.19.5
 # ---
-
+import contextlib
 # %%
 # OpenSees -- Open System for Earthquake Engineering Simulation
 # Pacific Earthquake Engineering Research Center
@@ -28,149 +28,149 @@
 # Written: Andreas Schellenberg (andreas.schellenberg@gmail.com)
 # Date: June 2017
 
-# region setup
 
-# %%
+
+# %% setup
 import os
+from time import strftime
+
+from FreeCAD.freecad_Eight_bolt_join import output_dir
+
 print(os.getcwd())
 # os.chdir(r"examples/OPENSEES")
 
-# from openseespywin.opensees import *
+import openseespywin.opensees as op
 
-import openseespywin.opensees as ops
-
-# import openseespy
-# from openseespy.opensees import *
-
-
-# endregion
-
-
-# region Start of model generation
-
+# %% Start of model generation
 
 # remove existing model
-# ops.wipe()
+op.wipe()
 
-
-# %%
-help(ops.model)
-ops.model("BasicBuilder", "-ndm",2, "-ndf",2)
+# help(op.model)
+op.model("BasicBuilder", "-ndm",2, "-ndf",2)
 
 # create nodes & add to Domain - command: node nodeId xCrd yCrd
-ops.node(1, 0.0,    0.0)
-ops.node(2, 144.0,  0.0)
-ops.node(3, 168.0,  0.0)
-ops.node(4,  72.0, 96.0)
+op.node(1, 0.0,    0.0)
+op.node(2, 144.0,  0.0)
+op.node(3, 168.0,  0.0)
+op.node(4,  72.0, 96.0)
 
 # set the boundary conditions - command: fix nodeID xRestrnt? yRestrnt?
-ops.fix(1, 1, 1)
-ops.fix(2, 1, 1)
-ops.fix(3, 1, 1)
+op.fix(1, 1, 1)
+op.fix(2, 1, 1)
+op.fix(3, 1, 1)
 
 # Define materials for truss elements
 
 # Create Elastic material prototype - command: uniaxialMaterial Elastic matID E
-ops.uniaxialMaterial("Elastic", 1, 3000.0)
-
-
-# %%
+op.uniaxialMaterial("Elastic", 1, 3000.0)
 
 # Create truss elements - command: element truss trussID node1 node2 A matID
-ops.element("truss", 1, 1, 4, 10.0, 1)
-ops.element("truss", 2, 2, 4,  5.0, 1)
-ops.element("truss", 3, 3, 4,  5.0, 1)
-
-
-# %%
+op.element("truss", 1, 1, 4, 10.0, 1)
+op.element("truss", 2, 2, 4,  5.0, 1)
+op.element("truss", 3, 3, 4,  5.0, 1)
 
 # create a Linear TimeSeries (load factor varies linearly with time) - command: timeSeries Linear $tag
-ops.timeSeries("Linear", 1)
+op.timeSeries("Linear", 1)
 
 # create a Plain load pattern - command: pattern Plain $tag $timeSeriesTag { $loads }
-ops.pattern("Plain", 1, 1, "-fact", 1.0)
+op.pattern("Plain", 1, 1, "-fact", 1.0)
 # create the nodal load - command: load nodeID xForce yForce
-ops.load(4, 100.0, -50.0)
+op.load(4, 100.0, -50.0)
 
 
-# %%
-#printModel()
-ops.printModel("-JSON", "-file", "Example1.1.json")
 
-# endregion
+import time
+date_time_str=time.strftime("%Y%m%d_%H%M%S")
+output_dir=os.path.join("output")
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
+print(os.getcwd())
+outfile_json= os.path.join(output_dir, time.strftime("Example1.1_%Y%m%d_%H%M%S.json"))
 
-
+op.printModel("-JSON", "-file", outfile_json)
 
 # region Start of analysis generation
 
 # %%
 
 # create the system of equation, a SPD using a band storage scheme
-help(ops.system)
+# help(op.system)
 # ops.system("BandSPD") # Banded Symmetric Positive Definite solver.
-ops.system("FullGeneral")
+op.system("FullGeneral")
 
 # create the DOF numberer, the reverse Cuthill-McKee algorithm
-ops.numberer("RCM")
+op.numberer("RCM")
 
 # create the constraint handler, a Plain handler is used as homo constraints
-ops.constraints("Plain")
+op.constraints("Plain")
 
 # create the solution algorithm, a Linear algorithm is created
-ops.algorithm("Linear")
+op.algorithm("Linear")
 
 # create the integration scheme, the LoadControl scheme using steps of 1.0
-ops.integrator("LoadControl", 1.0)
+op.integrator("LoadControl", 1.0)
 
 # create the analysis object
-ops.analysis("Static")
+op.analysis("Static")
 
+# %% start of recorder generation
 
-# endregion
+import time
+base_name="example1_1"
+date_time_str=time.strftime("%Y%m%d_%H%M%S")
+print(os.getcwd())
+output_dir=os.path.join("output")
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
 
+import os
+from contextlib import chdir
 
-# region Start of recorder generation
+print(f"Original directory: {os.getcwd()}")
 
-# %%
+# Safely switch to the new directory
+with chdir(output_dir):
+    print(f"Inside with-block: {os.getcwd()}")
+    # create a Recorder object for the nodal displacements at node 4
+    op.recorder("Node", "-file", f"{base_name}_{date_time_str}.out", "-time", "-node", 4, "-dof", 1, 2, "disp")
+    op.recorder("Element", "-file", f"{base_name}_eleGlobal_{date_time_str}.out", "-time", "-ele", 1, 2, 3, "forces")
+    op.recorder("Element", "-file", f"{base_name}_eleLocal_{date_time_str}.out", "-time", "-ele", 1, 2, 3,
+        "basicForces")
 
-# create a Recorder object for the nodal displacements at node 4
-ops.recorder("Node", "-file", "example.out", "-time", "-node", 4, "-dof", 1, 2, "disp")
-ops.recorder("Element", "-file", "eleGlobal.out", "-time", "-ele", 1, 2, 3, "forces")
-ops.recorder("Element", "-file", "eleLocal.out", "-time", "-ele", 1, 2, 3, "basicForces")
-
-
-# endregion
+# It automatically reverts back when you exit the block!
+print(f"Back to original: {os.getcwd()}")
 
 
 # region Finally perform the analysis
 
 
 # %%
-ops.analyze(1)
+op.analyze(1)
 
 #  region Print Stuff to Screen
 
 # print the current state at node 4 and at all elements
 #print("node 4 displacement: ", nodeDisp(4))
-ops.printModel("node", 4)
-ops.printModel("ele")
-ops.printModel()
+op.printModel("node", 4)
+op.printModel("ele")
+op.printModel()
 # ----------------------------------------------------
 # PRINTING RESULTS DIRECTLY TO CONSOLE
 # ----------------------------------------------------
 
 # 1. Print Displacements at Node 4
 # nodeDisp returns a list of [x_disp, y_disp]
-disp_node4 = ops.nodeDisp(4)
+disp_node4 = op.nodeDisp(4)
 print(f"Node 4 Displacements: DX = {disp_node4[0]:.5f}, DY = {disp_node4[1]:.5f}")
 
 # 2. Print Reactions at the Supports (Nodes 1, 2, 3)
 # You must call ops.reactions() first to tell the engine to calculate them
-ops.reactions()
+op.reactions()
 
-rxn_node1 = ops.nodeReaction(1)
-rxn_node2 = ops.nodeReaction(2)
-rxn_node3 = ops.nodeReaction(3)
+rxn_node1 = op.nodeReaction(1)
+rxn_node2 = op.nodeReaction(2)
+rxn_node3 = op.nodeReaction(3)
 
 print(f"Node 1 Reactions: FX = {rxn_node1[0]:.2f}, FY = {rxn_node1[1]:.2f}")
 print(f"Node 2 Reactions: FX = {rxn_node2[0]:.2f}, FY = {rxn_node2[1]:.2f}")
@@ -179,7 +179,7 @@ print(f"Node 3 Reactions: FX = {rxn_node3[0]:.2f}, FY = {rxn_node3[1]:.2f}")
 
 # 3. Print the Global Stiffness Matrix
 print("\n--- Global Stiffness Matrix [K] ---")
-ops.printA()
+op.printA()
 
 # Note: You can also save it to a file if it is too large for the console
 # ops.printA('-file', 'StiffnessMatrix.out')
@@ -187,7 +187,7 @@ ops.printA()
 # ops.wipe()
 
 # This will return the actual stiffness matrix as a Python list!
-K_matrix = ops.printA('-ret')
+K_matrix = op.printA('-ret')
 print(K_matrix)
 
 # endregion
@@ -199,27 +199,44 @@ print(K_matrix)
 # Import the visualization framework
 import opsvis as opsv
 import matplotlib.pyplot as plt
-help(opsv)
+#help(opsv)
 dir(opsv)
 print("Generating visualizations...")
 
+
 # 1. Plot the Undeformed Model (shows geometry and node/element tags)
-opsv.plot_model(node_labels=1, element_labels=1,node_supports=True)
+opsv.plot_model(node_labels=1, element_labels=1,node_supports=True, truss_node_offset=0)
+plt.show()
+
+print(op.getNodeTags())
+# opsv.plot_loads_2d(nep=op.getNodeTags(),
+# sfac=1.0,
+# fig_wi_he=(10, 6),
+# fig_lbrt=(0, 0, 10, 6),
+# fmt_model_loads={'color': 'black'},
+# node_supports=True,
+#     truss_node_offset=1,
+#     ax=False
+# )
+# plt.show()
 
 # 2. Plot the Deformed Shape (sfac is the scale factor to exaggerate bending)
 opsv.plot_defo(sfac=100)
 
+opsv.plot_load()
+plt.show()
+
 # Explicitly passing the 8 positional arguments to satisfy the Python 3.12 signature
-opsv.plot_loads_2d(
-    11,                 # nep: Number of arrows for distributed loads
-    1.0,                # sfac: Scale factor for the arrows
-    False,              # fig_wi_he: Figure width/height override
-    False,              # fig_lbrt: Figure bounds override
-    {'color': 'black'}, # fmt_model_loads: Dictionary for formatting
-    True,               # node_supports: Draws the pinned/roller triangles
-    1,                  # truss_node_offset: Visual offset for joints
-    False               # ax: Matplotlib axis override
-)
+# opsv.plot_loads_2d(
+#     11,                 # nep: Number of arrows for distributed loads
+#     1.0,                # sfac: Scale factor for the arrows
+#     False,              # fig_wi_he: Figure width/height override
+#     False,              # fig_lbrt: Figure bounds override
+#     {'color': 'black'}, # fmt_model_loads: Dictionary for formatting
+#     True,               # node_supports: Draws the pinned/roller triangles
+#     1,                  # truss_node_offset: Visual offset for joints
+#     False               # ax: Matplotlib axis override
+# )
 
 # opsv.plt.show()
 plt.show()
@@ -232,7 +249,12 @@ plt.show()
 
 opsv.plot_reactions()
 # Force the plots to display on your screen
-opsv.plt.savefig('my_truss.png')
+
+f"{base_name}_{date_time_str}.png"
+
+print(os.getcwd())
+with contextlib.chdir(output_dir):
+    opsv.plt.savefig(f"{base_name}_{date_time_str}.png")
 
 plt.show()
 
@@ -244,10 +266,10 @@ A = 10.0
 
 print("--- Truss Element Results ---")
 # Loop through all elements in the model
-for ele_tag in ops.getEleTags():
+for ele_tag in op.getEleTags():
     # 'basicForce' returns the internal axial force [P] for a truss element
     # (Index 0 is the actual force value)
-    axial_force = ops.eleResponse(ele_tag, 'basicForce')[0]
+    axial_force = op.eleResponse(ele_tag, 'basicForce')[0]
 
     # Calculate the stress (Sigma = P / A)
     axial_stress = axial_force / A

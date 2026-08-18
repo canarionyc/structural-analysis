@@ -3,7 +3,7 @@ Certainly. Here is a step-by-step proof using first principles and `sympy` for t
 **Step-by-step reasoning:**
 
 1. **Define the bending moment equation \(M(x)\):**
-	- For \(0 \leq x < a\): \(M(x) = R_A x\)
+	- For \(0 \le  q x < a\): \(M(x) = R_A x\)
 	- For \(a \leq x \leq L\): \(M(x) = R_A x - P(x-a)\)
 	- Where \(R_A = P b / L\), \(b = L - a\)
 

@@ -7,9 +7,9 @@ Demonstrates the use of autoimport for different structural analysis scenarios.
 # Import common structural analysis functionality
 import sys
 import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from autoimport import import_all
-import_all()
+# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# from autoimport import import_all
+# import_all()
 
 # %% Problem Setup
 print("=== Cantilever Beam Analysis ===")

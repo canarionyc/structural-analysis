@@ -19,3 +19,4 @@ openseespy
 openseespy
 openseespywin
 opsvis
+json5

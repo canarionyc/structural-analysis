@@ -10,7 +10,6 @@ help(Beam)
 E, I, L = symbols('E I L', positive=True)
 x = symbols('x', nonnegative=True) # Allows x to equal 0
 
-
 #%% 2. Set up the symbolic beam
 b = Beam(L, E, I, variable=x)
 print(b.elastic_modulus)

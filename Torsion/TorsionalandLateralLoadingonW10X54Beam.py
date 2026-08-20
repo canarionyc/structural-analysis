@@ -81,7 +81,7 @@ Delta_horiz = (F * L**3) / (48 * E * I4)
 import os
 print(os.getcwd())
 import json5
-with open("../data/torsional_lateral_params.json", "r") as f:
+with open("../data/AISC_W10x54_wide_flange_steel_section_torsional_lateral_params.json", "r") as f:
     params = json5.load(f)
 
 

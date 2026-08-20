@@ -1,8 +1,8 @@
 # %% ADVANCED VERIFICATION CLASS
 import math
-from ..core_modules.constants import BUCKLING_CURVES
-from ..core_modules.steel_bar import SteelBar
-from ..core_modules.buckling_result import BucklingResult
+from core_modules.constants import BUCKLING_CURVES
+from core_modules.steel_bar import SteelBar
+from core_modules.buckling_result import BucklingResult
 
 class DBSEACheck:
     @staticmethod
@@ -19,9 +19,9 @@ class DBSEACheck:
         # 2. Get the Radius of Gyration (radio de giro) for the specific axis
         # Renamed to avoid 'i' vs 'I' confusion
         if axis == 'y':
-            radius_gyration = bar.section.radius_gyration_y
+            radius_gyration = bar.section.iy
         else:
-            radius_gyration = bar.section.radius_gyration_z
+            radius_gyration = bar.section.iz
 
         # 3. Get effective length (longitud de pandeo L_cr)
         l_effective = bar.get_effective_length(axis)

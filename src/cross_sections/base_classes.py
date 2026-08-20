@@ -10,8 +10,8 @@ class CrossSection(ABC):
         # Atributos base que toda sección DEBE tener
         self.buckling_curves = {'y': 'c', 'z': 'c'}
 
-        self.radius_gyration_y = 0.0
-        self.radius_gyration_z = 0.0
+        self.iy = 0.0
+        self.iz = 0.0
 
 
         self.area = 0.0  # Area (mm2)

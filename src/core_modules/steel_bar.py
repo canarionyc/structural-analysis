@@ -1,6 +1,6 @@
 # %% STEEL BAR CON ARQUITECTURA ROBUSTA
-
-from .supports import SupportType
+import math
+from core_modules.supports import SupportType
 
 class SteelBar:
     """Represents a physical bar member."""
@@ -44,16 +44,28 @@ class SteelBar:
     def get_effective_length(self, axis='y'):
         return self.length * self.beta
 
+    def __str__(self) -> str:
+        return f"SteelBar(length={self.length} mm, beta={self.beta}, effective_length={self.get_effective_length()} mm, material={self.material}, section={self.section})"
+
 if __name__ == "__main__":
     # %% IMPORTS
-    from ..core_modules.steel_bar import SteelBar
-    from ..core_modules.materials import SteelMaterial
+    import os
+    print(os.getcwd())
+    from pprint import pprint
+    from core_modules.steel_bar import SteelBar
+    from core_modules.materials import SteelMaterial
     from cross_sections.chs import CircularHollowSection
 
     # %% EXAMPLE OF USAGE
     # Define a cantilever beam (Empotrado-Libre)
+    help(SteelMaterial)
     material = SteelMaterial("S275")
+    print(material)
+
+    help(CircularHollowSection)
     seccion_tubo = CircularHollowSection(d=100, t=5)
+    pprint(vars(seccion_tubo))
+    print(seccion_tubo)
 
     # Specifying the attachment system: Fixed at start, Free at end
     viga_en_voladizo = SteelBar.from_supports(

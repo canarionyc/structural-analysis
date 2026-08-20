@@ -1,5 +1,6 @@
 # %% IMPORTS
-from ..cross_sections.base_classes import CrossSection
+import math
+from cross_sections.base_classes import CrossSection
 
 # %% UPDATED HOLLOW SECTION WITH BUCKLING CURVE
 class CircularHollowSection(CrossSection):

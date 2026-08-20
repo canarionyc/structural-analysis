@@ -1,0 +1,21 @@
+{
+  "A": 10193.5,         // Cross sectional area of member, mm^2
+  "Ix": 126118122,      // Moment of inertia about the x-axis, mm^4
+  "Iy": 42871836,       // Moment of inertia about the y-axis, mm^4
+  "d": 256.54,          // Overall depth of member, mm
+
+  "Cw": 322295000000,   // Warping Constant, mm^6 
+  "JT": 628509,         // Torsional moment of inertia, mm^4 
+  "Sx": 983224,         // Elastic section modulus about the X-axis, mm^3 
+  "Sy": 337574,         // Elastic section modulus about the Y-axis, mm^3
+
+  "Zx": 1091378,        // Plastic section modulus about the x-axis, mm^3
+
+  "rx": 111.0,          // Radius of gyration about the x-axis, mm 
+  "w": 16.78,           // Gravity distributed load, N/mm (equivalent to 16.78 kN/m) 
+  "F": 22241,           // Lateral load in middle, N 
+  "T": 6914973,         // Torsion at mid-span, N-mm (equivalent to 6.91 kN-m) 
+  "P": 427029,          // Axial load, N 
+  "Lx": 4572,           // Vertical bending unbraced length, mm (evaluated from 4.572 m) 
+  "L": 7620             // Beam length, mm (evaluated from 7.62 m)
+}

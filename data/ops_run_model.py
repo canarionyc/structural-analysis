@@ -1,7 +1,7 @@
 """
 OpenSees JSON Parser & Visualizer for Grasshopper
 Inputs:
-    json_path: string (Path to your params_ksi_in.json)
+    ipe_path: string (Path to your params_ksi_in.json)
     run_analysis: bool (A toggle to run the solver)
 Outputs:
     gh_nodes: Point3d objects representing the joints
@@ -79,4 +79,4 @@ if run_analysis and json_path:
 
     print(f"Successfully loaded {len(gh_nodes)} nodes and {len(gh_elements)} elements.")
 else:
-    print("Toggle run_analysis to True and provide a valid json_path.")
+    print("Toggle run_analysis to True and provide a valid ipe_path.")

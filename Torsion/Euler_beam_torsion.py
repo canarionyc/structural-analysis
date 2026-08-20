@@ -37,7 +37,7 @@ R1, R2 = symbols('R1, R2')
 # %% [raw]
 # While it is a clever idea to try and use SymPy's built-in `Beam3D` class from the `sympy.physics.continuum_mechanics` module, **it is not a fully accurate port for this specific Maple workbook.** If you attempt to solve the W10X54 I-beam using `Beam3D`, you will encounter fundamental limitations in how SymPy models physics compared to what the Maple document is actually doing.
 #
-# Here is a verification and code-review of your `beam_torsion.py` approach:
+# Here is a verification and code-review of your `Euler_beam_torsion.py` approach:
 #
 # ### 1. The Missing Physics: Warping Torsion ($C_w$)
 #
@@ -74,7 +74,7 @@ import os
 print(os.getcwd())
 
 import json5
-with open("data/torsional_lateral_params.json", "r") as f:
+with open("data/AISC_W10x54_wide_flange_steel_section_torsional_lateral_params.json", "r") as f:
     params = json5.load(f)
 
 from sympy import pprint

@@ -1,0 +1,33 @@
+{
+    "A": 15.8,            // Cross sectional area of member, inch^2
+    "Ix": 303,            // Moment of inertia about the x-axis, inch^4
+  "Iy": 103,            // Moment of inertia about the y-axis, inch^4
+    "d": 10.1,            // Overall depth of member, inch
+
+  "Cw": 1200,           // Warping Constant, inch^6 
+  "JT": 1.51,           // Torsional moment of inertia, inch^4 
+  "Sx": 60,             // Elastic section modulus about the X-axis, inch^3 
+  "Sy": 20.6,           // Elastic section modulus about the Y-axis, inch^3
+
+
+  "Zx": 66.6,           // Plastic section modulus about the x-axis, inch^3
+
+
+
+
+  "rx": 4.37,           // Radius of gyration about the x-axis, inch 
+  "w": 0.0958333333,    // Gravity distributed load, kipf/inch (evaluated from 1.15 kipf/ft) 
+  "F": 5,               // Lateral load in middle, kipf 
+  "T": 61.2,            // Torsion at mid-span, kipf-inch (evaluated from 5.1 kipf-ft) 
+  "P": 96,              // Axial load, kipf 
+  "Lx": 180,            // Vertical bending unbraced length, inches (evaluated from 15 ft) 
+  "L": 300,             // Beam length, inches (evaluated from 25 ft)
+
+  "Lb": 180,            // Unbraced length, inches (evaluated from 15 ft) [cite: 50]
+  "Ly": 90,             // Axial horizontal unbraced length, inches (evaluated from 7.5 ft) 
+  "Fy": 50,             // Beam yield stress, ksi 
+  "E": 29000,           // Young's modulus, ksi 
+  "G": 11200,           // Shear modulus, ksi 
+  "Omega": 1.67,        // Safety factor for compression 
+  "K": 0.85             // Effective length factor 
+}

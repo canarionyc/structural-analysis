@@ -29,3 +29,6 @@ class SteelMaterial:
         else:
             self.fy = props["fy"]
         self.fu = props["fu"]
+
+    def __str__(self):
+        return f"SteelMaterial(grade={self.grade}, thickness={self.thickness})"

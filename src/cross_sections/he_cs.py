@@ -1,4 +1,7 @@
+import csv
 import math
+import os
+from pprint import pprint
 from cross_sections.base_classes import CrossSection
 
 class HEProfile(CrossSection):
@@ -64,55 +67,9 @@ class HEProfile(CrossSection):
         
         self.Iz = flange_Iz + web_Iz
 
-    # --- 2. Load JSON and Export to CSV ---
-    def generate_catalog():
-        json_filepath = 'HEB - DIN EN 10034.json'
-        csv_filepath = 'heb_catalog.csv'
 
-        # Load the SOFiSTiK cross-section JSON
-        with open(json_filepath, 'r', encoding='utf-8') as f:
-            data = json.load(f)
 
-        # Extract the ParameterMap containing the geometrical inputs
-        parameter_map = data.get("ParameterMap", {})
 
-        # Define the columns we want in our output CSV
-        headers = [
-            'Profile', 'h_mm', 'b_mm', 'tw_mm', 'tf_mm', 'r_mm',
-            'Area_mm2', 'Iy_mm4', 'Iz_mm4', 'Buckling_Curve_Y', 'Buckling_Curve_Z'
-        ]
-
-        with open(csv_filepath, 'w', newline='', encoding='utf-8') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=headers)
-            writer.writeheader()
-
-            # Iterate over all sizes (e.g., '100', '120', '200')
-            for size, params in parameter_map.items():
-                h = params.get('h')
-                b = params.get('b')
-                tw = params.get('tw')
-                tf = params.get('tf')
-                r = params.get('r', 0)  # Fallback to 0 if root radius is missing
-
-                # Calculate the structural properties using the class
-                profile = HEBProfile(h=h, b=b, tw=tw, tf=tf)
-
-                # Write the flattened dictionary to the CSV
-                writer.writerow({
-                    'Profile': f"HEB {size}",
-                    'h_mm': profile.h,
-                    'b_mm': profile.b,
-                    'tw_mm': profile.tw,
-                    'tf_mm': profile.tf,
-                    'r_mm': r,
-                    'Area_mm2': round(profile.area, 2),
-                    'Iy_mm4': round(profile.Iy, 2),
-                    'Iz_mm4': round(profile.Iz, 2),
-                    'Buckling_Curve_Y': profile.buckling_curves['y'],
-                    'Buckling_Curve_Z': profile.buckling_curves['z']
-                })
-
-        print(f"Success! {len(parameter_map)} profiles written to {csv_filepath}")
 
 
 class HEAProfile(HEProfile):
@@ -125,6 +82,67 @@ class HEAProfile(HEProfile):
         self.profile_type = "HEA"
 
 
+        # --- 2. Load JSON and Export to CSV ---
+# def generate_HEB_catalog():
+#     import json
+#     from pyprojroot import here
+#     steel_profiles_dir = r"C:\Program Files\SOFiSTiK\2026\SOFiSTiK Rhino Interface 2026\Contents\grasshopper\content\steel profiles"
+#     pprint(os.listdir(steel_profiles_dir))
+#
+#     profile_type = "HEB"
+#     json_filepath = os.path.join(steel_profiles_dir, f"{profile_type} - DIN EN 10034.json")
+#     print(json_filepath)
+#     assert os.path.exists(json_filepath)
+#
+#     print(os.getcwd())
+#
+#     csv_filepath = here(os.path.join('data', 'heb_catalog.csv'))
+#
+#     # Load the SOFiSTiK cross-section JSON
+#     with open(json_filepath, 'r', encoding='utf-8') as f:
+#         data = json.load(f)
+#
+#     # Extract the ParameterMap containing the geometrical inputs
+#     parameter_map = data.get("ParameterMap", {})
+#
+#     # Define the columns we want in our output CSV
+#     headers = [
+#         'Profile', 'h_mm', 'b_mm', 'tw_mm', 'tf_mm', 'r_mm',
+#         'Area_mm2', 'Iy_mm4', 'Iz_mm4', 'Buckling_Curve_Y', 'Buckling_Curve_Z'
+#     ]
+#
+#     with open(csv_filepath, 'w', newline='', encoding='utf-8') as csvfile:
+#         writer = csv.DictWriter(csvfile, fieldnames=headers)
+#         writer.writeheader()
+#
+#         # Iterate over all sizes (e.g., '100', '120', '200')
+#         for size, params in parameter_map.items():
+#             h = params.get('h')
+#             b = params.get('b')
+#             tw = params.get('tw')
+#             tf = params.get('tf')
+#             r = params.get('r', 0)  # Fallback to 0 if root radius is missing
+#
+#             # Calculate the structural properties using the class
+#             profile = HEBProfile(h=h, b=b, tw=tw, tf=tf)
+#
+#             # Write the flattened dictionary to the CSV
+#             writer.writerow({
+#                 'Profile': f"HEB {size}",
+#                 'h_mm': profile.h,
+#                 'b_mm': profile.b,
+#                 'tw_mm': profile.tw,
+#                 'tf_mm': profile.tf,
+#                 'r_mm': r,
+#                 'Area_mm2': round(profile.area, 2),
+#                 'Iy_mm4': round(profile.Iy, 2),
+#                 'Iz_mm4': round(profile.Iz, 2),
+#                 'Buckling_Curve_Y': profile.buckling_curves['y'],
+#                 'Buckling_Curve_Z': profile.buckling_curves['z']
+#             })
+#     print(f"Success! {len(parameter_map)} profiles written to {csv_filepath}")
+
+
 class HEBProfile(HEProfile):
     """
     Class specifically for HEB (Standard) profiles. 
@@ -133,3 +151,7 @@ class HEBProfile(HEProfile):
     def __init__(self, h, b, tw, tf):
         super().__init__(h, b, tw, tf)
         self.profile_type = "HEB"
+
+if __name__ == "__main__":
+    # generate_HEB_catalog()
+    print(__file__)

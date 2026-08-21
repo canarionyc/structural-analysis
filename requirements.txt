@@ -20,3 +20,5 @@ openseespy
 openseespywin
 opsvis
 json5
+eurocodepy
+eurocodepy

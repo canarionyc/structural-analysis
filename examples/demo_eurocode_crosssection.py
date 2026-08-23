@@ -6,9 +6,9 @@ This submodule provides simple analytical cross-section models for:
 
 and computes key geometric properties used in structural design.
 """
-
+import math
 from eurocodepy import crosssection as cs
-help(cs)
+#help(cs)
 
 def demo_rectangular() -> None:
     rect = cs.RectangularCrossSection(width=300.0, height=500.0)
@@ -23,6 +23,7 @@ def demo_rectangular() -> None:
     print(f"  radius_z   : {rect.radius_z:.3f} mm")
     print(f"  polar_I    : {rect.polar_inertia:.1f} mm^4")
     print()
+
 
 
 def demo_circular() -> None:

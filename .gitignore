@@ -247,3 +247,7 @@ doering-andreas-Stepped-Euler-Bernoulli-Beam/LICENSE
 *.rhl
 *.mpco
 /output
+*.dwg
+*.csv#
+*.txt#
+*.txt~

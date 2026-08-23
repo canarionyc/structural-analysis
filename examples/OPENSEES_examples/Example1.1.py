@@ -37,7 +37,7 @@ from time import strftime
 from FreeCAD.freecad_Eight_bolt_join import output_dir
 
 print(os.getcwd())
-# os.chdir(r"examples/OPENSEES")
+# os.chdir(r"examples/OPENSEES_examples")
 
 import openseespywin.opensees as op
 

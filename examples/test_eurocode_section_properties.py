@@ -7,7 +7,7 @@ cross-section checks.
 
 import numpy as np
 
-from eurocodepy import section_properties as sp
+from eurocodepy import section_properties as section_props
 
 
 def demo_rectangular_section() -> None:
@@ -25,7 +25,7 @@ def demo_rectangular_section() -> None:
     M = 120000.0
     P = 50000.0
 
-    uncracked, cracked = sp.calc_section_rectangular(
+    uncracked, cracked = section_props.calc_section_rectangular(
         h, b, A_s, A_sc, A_p, ds, dsc, dp, alpha_Es, alpha_Ep, M, P
     )
 
@@ -56,7 +56,7 @@ def demo_t_section() -> None:
     M = 180000.0
     P = 70000.0
 
-    uncracked, cracked = sp.calc_section_T(
+    uncracked, cracked = section_props.calc_section_T(
         h, bw, bf, hf, A_s, A_sc, A_p, ds, dsc, dp, alpha_Es, alpha_Ep, M, P
     )
 

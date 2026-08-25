@@ -8,6 +8,8 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.19.5
 # ---
+
+# %%
 import contextlib
 # %%
 # OpenSees -- Open System for Earthquake Engineering Simulation

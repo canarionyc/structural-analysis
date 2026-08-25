@@ -12,6 +12,8 @@
 #     language: python
 #     name: python3
 # ---
+
+# %%
 from sectionproperties import post
 # %% [markdown]
 # # Section Library
@@ -70,9 +72,11 @@ help(sec.section_props)
 sec.section_props.asdict()
 
 
-#%%
+# %%
 sec.calculate_warping_properties()
 sec.calculate_plastic_properties()
+
+sec_dict=sec.section_props.asdict()
 
 # %% [markdown]
 # ### Display Results

@@ -41,7 +41,7 @@ sec.display_results()
 
 # %%
 sec.calculate_geometric_properties()
-sec.display_results()
+sec.display_results('.2g')
 
 # %% [markdown]
 # The formatting can be changed by passing a formatting string to the `fmt` argument, see [here](https://docs.python.org/3/library/string.html#format-specification-mini-language) for more information on string formatting.
@@ -55,7 +55,7 @@ sec.display_results(fmt=".1f")
 # %%
 sec.calculate_warping_properties()
 sec.calculate_plastic_properties()
-sec.display_results()
+sec.display_results('.2g')
 
 # %% [markdown]
 # Because we have not specified any material properties, the displayed properties are purely geometric. If we assign a steel material to the CHS, we will see some results change to material property weighted values (see [here](../../user_guide/results.rst#how-material-properties-affect-results) for more information on how material properties affect results). We can also print the transformed results using the `display_transformed_results()` method.
@@ -77,10 +77,12 @@ geom.material = steel  # assign steel to the CHS
 # remesh and recreate Section object
 geom.create_mesh(mesh_sizes=5)
 sec = Section(geometry=geom)
+sec.plot_mesh(materials=False)
+sec.display_mesh_info()
 
-# perform analysis and display results
+# %% perform analysis and display results
 sec.calculate_geometric_properties()
 sec.calculate_warping_properties()
 sec.calculate_plastic_properties()
-sec.display_results(fmt=".3e")
-sec.display_transformed_results(e_ref=steel, fmt=".3e")
+sec.display_results(fmt=".3g")
+sec.display_transformed_results(e_ref=steel, fmt=".3g")

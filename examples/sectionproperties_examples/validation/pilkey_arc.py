@@ -42,9 +42,24 @@
 # Note that `sectionproperties` uses an `x-y` coordinate system rather than the `y-z` system used by Pilkey.
 
 # %% editable=true slideshow={"slide_type": ""} tags=["nbsphinx-thumbnail"]
-from IPython.display import Image
+import os
+print(os.getcwd())
 
-display(Image(filename="images/arc-geom.png"))
+from IPython.display import Image, display
+
+img_png=r'C:\dev\structural-analysis\examples\sectionproperties_examples\validation\images\arc-geom.png'
+
+display(Image(filename=img_png))
+
+#%%
+from pathlib import Path
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+
+img = mpimg.imread(Path(img_png))
+plt.imshow(img)
+plt.axis("off")
+plt.show()
 
 # %% [markdown]
 # We can model the above geometry by generating a `shapely` `LineString` from a list of points defining the centreline of the above arc. The `LineString` can be buffered (extruded) orthogonal to the line to create a `Polygon` object. This `Polygon` object can then be passed to the `sectionproperties` `Geometry` object.

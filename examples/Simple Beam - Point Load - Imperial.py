@@ -6,7 +6,7 @@ from Pynite import FEModel3D
 
 # Import 'Visualization' for rendering the model
 from Pynite import Visualization
-from utils.imperial_to_si import to_si, kip, ksi, kci, u
+from test_python_package.utils import to_si, kip, u
 # Create a new finite element model
 beam = FEModel3D()
 

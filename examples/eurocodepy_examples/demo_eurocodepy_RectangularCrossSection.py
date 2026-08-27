@@ -1,9 +1,18 @@
+#%% setup
+from math import sqrt
+
 #%% eurocodepy
 import eurocodepy
 help(eurocodepy)
 import eurocodepy.utils as ecu
 dir(ecu)
 
+#%%
+import doctest
+
+# This will run the examples found in the docstring of the class/function.
+# It will print nothing if the tests pass, or error logs if they fail.
+doctest.run_docstring_examples(ecu.RectangularCrossSection, globals(), verbose=True)
 #%% rectangular section
 help(ecu.RectangularCrossSection)
 

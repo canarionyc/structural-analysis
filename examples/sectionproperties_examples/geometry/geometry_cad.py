@@ -24,6 +24,9 @@
 # We start by importing the necessary modules.
 
 # %%
+import os
+from pprint import pp
+
 from sectionproperties.analysis import Section
 from sectionproperties.pre import CompoundGeometry, Geometry
 
@@ -41,26 +44,26 @@ import pyprojroot
 print(pyprojroot.here())
 
 # %%
-import os
-help(os.path.join)
-r'C:\repos\section-properties-master\docs\_static\cad_files'
-exists = os.path.exists(r'C:\repos\section-properties-master\docs\_static\cad_files')
-assert exists
+
+# help(os.path.join)
 
 cad_files_dir=os.path.join(r'C:\repos\section-properties-master\docs', "_static", "cad_files")
-os.path.exists(cad_files_dir)
-
+assert os.path.exists(cad_files_dir)
+pp(os.listdir(cad_files_dir))
 # %%
 import shapely.geometry
 import cad_to_shapely as c2s
+dir(c2s)
 help(c2s)
+help(c2s.examples)
 
 from c2s import utils
+import c2s.utils
 help(c2s.utils)
 
 # %%
 geom = Geometry.from_dxf(dxf_filepath=os.path.join(cad_files_dir, "box_section.dxf"))
-
+geom.plot_geometry()
 # %% [markdown]
 # To display the section, we mesh the geometry and plot the mesh.
 
@@ -80,9 +83,12 @@ Section(geometry=geom).plot_mesh(materials=False)
 # We can load a single region from a ``.3dm`` file by using the [Geometry.from_3dm()](../../gen/sectionproperties.pre.geometry.Geometry.rst#sectionproperties.pre.geometry.Geometry.from_3dm) method.
 
 # %%
-geom = Geometry.from_3dm(filepath="../../_static/cad_files/rhino.3dm")
-geom = geom.rotate_section(angle=90)  # rotate for viewability
+help(Geometry.from_3dm)
 
+geom = Geometry.from_3dm(filepath=os.path.join(cad_files_dir, "rhino.3dm"))
+geom.plot_geometry()
+geom = geom.rotate_section(angle=90)  # rotate for viewability
+geom.plot_geometry()
 # %% [markdown]
 # To display the section, we mesh the geometry and plot the mesh.
 
@@ -96,9 +102,10 @@ Section(geometry=geom).plot_mesh(materials=False)
 # We can load multiple regions from a ``.3dm`` file by using the [CompoundGeometry.from_3dm()](../../gen/sectionproperties.pre.geometry.CompoundGeometry.rst#sectionproperties.pre.geometry.CompoundGeometry.from_3dm) method.
 
 # %%
-geom = CompoundGeometry.from_3dm(filepath="../../_static/cad_files/rhino_compound.3dm")
+geom = CompoundGeometry.from_3dm(filepath=os.path.join(cad_files_dir, "rhino_compound.3dm"))
+geom.plot_geometry()
 geom = geom.rotate_section(angle=90)  # rotate for viewability
-
+geom.plot_geometry()
 # %% [markdown]
 # To display the section, we mesh the geometry and plot the mesh.
 

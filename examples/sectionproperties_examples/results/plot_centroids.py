@@ -58,4 +58,4 @@ sec.plot_centroids(title="Geometric & Warping Centroids", alpha=0.2)
 
 # %%
 sec.calculate_plastic_properties()
-sec.plot_centroids()
+sec.plot_centroids();

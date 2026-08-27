@@ -46,7 +46,7 @@ steel = Material(
     yield_strength=500,  # N/mm^2 (MPa)
     color="grey",
 )
-
+print(steel)
 # %% [markdown]
 # The below examples highlight a number of ways materials can be assigned to geometries in `sectionproperties`.
 
@@ -113,12 +113,15 @@ from sectionproperties.pre.library import rectangular_section
 # create a rectangular section with the default material
 geom = rectangular_section(d=16, b=100)
 geom.create_mesh(mesh_sizes=10)
-Section(geometry=geom).plot_mesh()
-
-# assign steel to the geometry, remesh and recreate the Section object
+sec=Section(geometry=geom)
+sec.plot_mesh();
+sec.display_mesh_info()
+# %% assign steel to the geometry, remesh and recreate the Section object
 geom.material = steel
 geom.create_mesh(mesh_sizes=10)
-Section(geometry=geom).plot_mesh()
+sec=Section(geometry=geom)
+sec.plot_mesh();
+sec.display_mesh_info()
 
 # %% [markdown]
 # ## Assigning materials to `CompoundGeometry` objects
@@ -147,10 +150,13 @@ geom = (
     + plate1.align_to(other=beam, on="left")
     + plate2.align_to(other=beam, on="right")
 )
-
-# mesh and plot
+geom.plot_geometry(title="Compound geometry")
+# %% mesh and plot
 geom.create_mesh(mesh_sizes=[20, 10, 10])
-Section(geometry=geom).plot_mesh()
+sec=Section(geometry=geom)
+sec.plot_mesh();
+sec.display_mesh_info()
+
 
 # %% [markdown]
 # Materials can also be changed after the fact by looping through the `Geometry` objects contained with the `CompoundGeometry` object.
@@ -161,9 +167,14 @@ rect1 = rectangular_section(d=10, b=10)
 rect2 = rectangular_section(d=20, b=20).align_to(other=rect1, on="right")
 geom = rect1 + rect2
 geom.create_mesh(mesh_sizes=[1])
-Section(geometry=geom).plot_mesh()
+sec=Section(geometry=geom)
+sec.plot_mesh();
+sec.display_mesh_info()
 
-# create list of materials
+# %% [markdown]
+# ### Change Materials
+# %% [markdown]
+# Create a list of materials
 mat_list = [steel, timber]
 
 # loop through Geometry objects in CompoundGeometry to change materials
@@ -171,8 +182,9 @@ for geometry, mat in zip(geom.geoms, mat_list, strict=False):
     geometry.material = mat
 
 # remesh and recreate Section object
-geom.create_mesh(mesh_sizes=[1])
-Section(geometry=geom).plot_mesh()
+sec=Section(geometry=geom)
+sec.plot_mesh();
+sec.display_mesh_info()
 
 # %% [markdown]
 # For more information, see [Assigning Material Properties](../../user_guide/geometry.rst#assigning-material-properties).

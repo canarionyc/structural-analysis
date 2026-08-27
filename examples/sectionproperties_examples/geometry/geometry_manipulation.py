@@ -84,6 +84,7 @@ geom.plot_geometry()
 
 # %%
 # create RHS PFC
+help(channel_section)
 pfc_right = channel_section(d=200, b=75, t_f=12, t_w=6, r=12, n_r=8)
 
 # create LHS PFC by mirroring the RHS PFC
@@ -100,7 +101,7 @@ geom.plot_geometry()
 
 # %%
 geom = geom.rotate_section(angle=10)
-geom.plot_geometry()
+geom.plot_geometry();
 
 # %% [markdown]
 # ## Shift
@@ -110,7 +111,7 @@ geom.plot_geometry()
 # %% nbsphinx-thumbnail={"output-index": 0}
 x_min, _, y_min, _ = geom.calculate_extents()
 geom_t = geom.shift_section(x_offset=-x_min, y_offset=-y_min)
-geom_t.plot_geometry()
+geom_t.plot_geometry();
 
 # %% [markdown]
 # ## Split
@@ -124,7 +125,7 @@ right_geoms, left_geoms = geom.split_section(point_i=(102, 0), vector=(0, 1))
 
 # combine resultant geometries into a CompoundGeometry object
 geom = CompoundGeometry(geoms=left_geoms + right_geoms)
-geom.plot_geometry()
+geom.plot_geometry();
 
 # %% [markdown]
 # Note how control points are added automatically as required.
@@ -136,13 +137,19 @@ geom.plot_geometry()
 #
 # We start with a 100 x 50 x 6 RHS and create the following sections:
 #
-# 1. 2.0 mm external erosion
-# 2. 1.0 mm external dilation
-# 3. 1.5 mm external and internal erosion
+
+
+
 
 # %%
 rhs_base = rectangular_hollow_section(d=100, b=50, t=6, r_out=15, n_r=8)
-rhs_base.plot_geometry(title="RHS Base")
-rhs_base.offset_perimeter(amount=-2.0).plot_geometry(title="RHS 1")
-rhs_base.offset_perimeter(amount=1.0).plot_geometry(title="RHS 2")
+rhs_base.plot_geometry(title="RHS Base");
+
+# 1. 2.0 mm external erosion
+rhs_base.offset_perimeter(amount=-2.0).plot_geometry(title="RHS 1");
+
+# 2. 1.0 mm external dilation
+rhs_base.offset_perimeter(amount=1.0).plot_geometry(title="RHS 2");
+
+# 3. 1.5 mm external and internal erosion
 rhs_base.offset_perimeter(amount=-1.5, where="all").plot_geometry(title="RHS 3")

@@ -42,9 +42,13 @@
 # Note that `sectionproperties` uses an `x-y` coordinate system rather than the `y-z` system used by Pilkey.
 
 # %% editable=true slideshow={"slide_type": ""} tags=["nbsphinx-thumbnail"]
-from IPython.display import Image
+import os
+print(os.getcwd())
+import IPython.display
+dir(IPython.display)
+from IPython.display import Image, display_png
 
-display(Image(filename="images/channel-geom.png"))
+display_png(Image(filename=r"C:\dev\structural-analysis\examples\sectionproperties_examples\validation\images\channel-geom.png"))
 
 # %% [markdown]
 # We can model the above geometry by generating a `shapely` `Polygon` from a list of points, then passing this `Polygon` to the `sectionproperties` `Geometry` object.
@@ -54,9 +58,7 @@ from shapely import Polygon
 
 from sectionproperties.pre import Geometry, Material
 
-t = 1  # channel thickness
-h = 18  # distance between centreline of channel flanges
-b = 8  # distance from edge of flange to centreline of web
+
 # steel material
 mat = Material(
     name="Steel",
@@ -66,8 +68,14 @@ mat = Material(
     density=1.0,
     color="lightgrey",
 )
+print(mat)
 
-# define list of points, starting from lower left hand corner
+# %% define list of points, starting from lower left hand corner
+
+t = 1  # channel thickness
+h = 18  # distance between centreline of channel flanges
+b = 8  # distance from edge of flange to centreline of web
+
 points = [
     (-0.5 * t, -0.5 * h - 0.5 * t),
     (b, -0.5 * h - 0.5 * t),
@@ -86,7 +94,7 @@ poly = Polygon(shell=points)
 geom = Geometry(geom=poly, material=mat)
 
 # plot geometry
-geom.plot_geometry()
+geom.plot_geometry();
 
 # %% [markdown]
 # ## Create mesh and `Section` object
@@ -94,8 +102,18 @@ geom.plot_geometry()
 # The numerical analysis by Pilkey uses 9-noded quadraliteral elements. The mesh used by Pilkey for this problem can be seen below.
 
 # %%
-display(Image(filename="images/channel-mesh.png"))
+img_png=r'C:\dev\structural-analysis\examples\sectionproperties_examples\validation\images\channel-mesh.png'
+display(Image(filename=img_png))
 
+#%%
+from pathlib import Path
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+
+img = mpimg.imread(Path(img_png))
+plt.imshow(img)
+plt.axis("off")
+plt.show()
 # %% [markdown]
 # We can create a mesh in `sectionproperties` using 6-noded triangular elements by defining a maximum triangular element area. In this case we choose `mesh_sizes=0.1` and create the resulting `Section` object.
 
@@ -114,7 +132,7 @@ sec.plot_mesh()
 # %%
 sec.calculate_geometric_properties()
 sec.calculate_warping_properties()
-
+sec.display_results('.2g')
 # %% [markdown]
 # ## Comparison of Results
 #

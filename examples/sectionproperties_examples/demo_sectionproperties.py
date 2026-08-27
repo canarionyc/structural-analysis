@@ -1,38 +1,105 @@
 #%% 1. Setup and imports
+import os
 import matplotlib
 
-matplotlib.use("Agg")
+# matplotlib.use("Agg") # FigureCanvasAgg is non-interactive, and thus cannot be shown
 
 import matplotlib.pyplot as plt
 #%%
 import sectionproperties
-print(sectionproperties.analysis.__file__)
+# from pydoc import doc
+# doc(sectionproperties)
 
 help(sectionproperties)
 dir(sectionproperties)
 
+
+from sectionproperties import analysis
+dir(analysis)
+
 from sectionproperties.analysis import Section
 help(Section)
 from sectionproperties.pre import Material
-from sectionproperties.pre.library import i_section, rectangular_section
+help(Material)
 
-#%% from sectionproperties.pre.library import rectangular_section
-from sectionproperties.analysis import Section
+
+#%%
+from sectionproperties.pre.library import rectangular_section
+help(rectangular_section)
 
 # create a 50 x 100 rectangle and mesh it
-geom = rectangular_section(d=100, b=50)
-geom.create_mesh(mesh_sizes=[5])
+d=100; b=50
+geom = rectangular_section(d=d, b=b)
+geom.plot_geometry();
+#%%
+geom.create_mesh(mesh_sizes=[5]);
 
 # run a geometric analysis
 sec = Section(geometry=geom)
+help(sec.calculate_geometric_properties)
 sec.calculate_geometric_properties()
+# sec.calculate_warping_properties()
+sec.plot_mesh(materials=False)
 
+dir(sec)
 # get some results
 area = sec.get_area()
-ixx_c, iyy_c, ixy_c = sec.get_ic()
 print(f"Area = {area:.0f} mm²")
-print(f"Ixx = {ixx_c:.0f} mm⁴, Iyy = {iyy_c:.0f} mm⁴")
+print(f"Expected Area = {d*b:.0f} mm²")
 
+#%% centroids
+help(sec.get_c)
+cx,cy=sec.get_c()
+print(f"Centroid = ({cx:.0f}, {cy:.0f}) mm")
+
+from scipy import integrate
+dir(integrate)
+help(integrate.quad)
+
+integrate.quad(lambda x, depth: depth*x, 0, b, args=(d,))/area
+integrate.quad(lambda base, y: base*y, 0, d, args=(b,))/area
+
+#%%  cross-section centroidal second moments of area.
+help(sec.get_ic)
+ixx_c, iyy_c, ixy_c = sec.get_ic()
+print(f"Ixx = {ixx_c:.0f} mm⁴, Iyy = {iyy_c:.0f} mm⁴")
+print(f"Ixy = {ixy_c:.0f} mm⁴")
+
+
+
+#%% Second moments of area about the global axis
+dir(sec)
+help(sec.get_ig)
+(ixx_g, iyy_g, ixy_g) = sec.get_ig()
+print(f"Ixx_g = {ixx_g:.0f} mm⁴, Iyy_g = {iyy_g:.0f} mm⁴")
+print(f"Ixy_g = {ixy_g:.0f} mm⁴")
+
+print(f"Ixx_g_formula = {b*(d**3)/12:.0f} mm⁴, Iyy_g_formula = {d*(b**3)/12:.0f} mm⁴")
+print(f"Ixy_g = {0:.0f} mm⁴")
+
+print(ixx_c + area*sec.section_props.cy**2, ixx_g)
+print(iyy_c + area*sec.section_props.cx**2, iyy_g)
+
+#%% one dimensional integrals
+from scipy import integrate
+dir(integrate)
+help(integrate.quad)
+ixx_g_num, err = integrate.quad(lambda y: b*y**2, 0, d)
+print(f"Numerical Ixx = {ixx_g_num:.0f} mm⁴, Error = {err:.0f} mm⁴")
+
+iyy_g_num, err = integrate.quad(lambda x: d*x**2, 0, b)
+print(f"Numerical Iyy = {iyy_g_num:.0f} mm⁴, Error = {err:.0f} mm⁴")
+
+
+
+#%% two dimensional integrals
+
+help(integrate.dblquad)
+f=lambda y,x: x*y
+
+ixy_g_num, err = integrate.dblquad(f, 0, b, 0, d)
+print(f"Numerical Ixy = {ixy_g_num:.0f} mm⁴, Error = {err:.0f} mm⁴")
+ixy_g
 #%%
 
 #%% 2. Define a material
@@ -60,6 +127,8 @@ print(f"  Iyy: {props_rect.iyy_c:.3e} m^4")
 print(f"  Centroid: ({props_rect.cx:.4f}, {props_rect.cy:.4f}) m")
 
 #%% 4. Create a more realistic steel I-section
+from sectionproperties.pre.library import i_section
+help(i_section)
 beam = i_section(
     d=0.40,
     b=0.20,

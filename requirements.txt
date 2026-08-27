@@ -23,3 +23,5 @@ json5
 eurocodepy
 eurocodepy
 sectionproperties
+cad-to-shapely
+shapely

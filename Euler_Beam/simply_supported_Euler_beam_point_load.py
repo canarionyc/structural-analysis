@@ -20,16 +20,9 @@
 # This script demonstrates the derivation of beam deflection and slope formulas.
 # %%
 # Import common structural analysis functionality
-import sys
-import os
-from importlib import reload
 
-import numpy as np
-import matplotlib.pyplot as plt
 import sympy as sp
-from sympy import Dict, simplify, sympify, lambdify
-
-from pprint import pprint
+from sympy import Dict, simplify, lambdify
 
 # help(assumptions)
 # help(assuming)
@@ -100,7 +93,8 @@ params_si_json =os.path.join("data", "params_si.json")
 
 import importlib
 # help(importlib)
-from utils import particularize
+from test_python_package.utils import particularize
+
 # help(importlib.reload)
 importlib.reload(particularize)
 replace = particularize.replace
@@ -224,7 +218,7 @@ sp.plot(v_prime_x, (x, 0, params['L']), title="Slope v'(x)", ylabel="Slope")
 
 help(sp.solve)
 #%%
-from sympy import Symbol, Piecewise, solveset, Interval
+from sympy import solveset, Interval
 
 # help(sp.substitution)
 

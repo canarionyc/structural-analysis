@@ -36,11 +36,12 @@ sec.plot_mesh(materials=False)
 # %%
 sec.calculate_geometric_properties()
 sec.calculate_warping_properties()
-
+sec.display_results('.2g')
 # %% [markdown]
 # We will analyse the elliptical section under a complex loading case. The `calculate_stress()` method returns a `StressPost` object that we can use for post-processing purposes.
 
 # %%
+help(sec.calculate_stress)
 stress = sec.calculate_stress(
     n=100e3,
     mxx=10e6,

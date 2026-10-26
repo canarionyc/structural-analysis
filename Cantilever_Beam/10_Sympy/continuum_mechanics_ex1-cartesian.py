@@ -110,7 +110,7 @@ b1.plot_loading_results(params)
 # endregion
 
 ## region FEA
-#%%
+# %%
 # from Pynite import FEModel3D
 # beam1 = FEModel3D()
 #

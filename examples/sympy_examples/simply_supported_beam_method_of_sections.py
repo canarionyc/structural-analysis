@@ -1,4 +1,4 @@
-#%%
+#%% setup
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -27,8 +27,8 @@ V1=sp.solve(eq_cut1_Fy)[0]
 print(V1)
 
 import sympy.solvers.solvers
-help(sp.solve)
-help(sympy.solvers.solvers.solve)
+#help(sp.solve)
+#help(sympy.solvers.solvers.solve)
 M1=sp.solve(eq_cut1_M, M1)[0]
 print(f"Step 2: Section 1 (0 < x < 5): V = {V1}, M = {M1}")
 
@@ -50,7 +50,7 @@ print(f"Step 3: Section 2 (5 < x < 10): V = {V2}, M = {M2}")
 #%%
 from sympy.functions.elementary.piecewise import Piecewise
 
-help(Piecewise)
+# help(Piecewise)
 
 #help(sp.functions.elementary)
 
@@ -80,13 +80,14 @@ ax[1].set_title('Bending Moment Diagram')
 ax[1].set_xlabel('Position along the beam (m)')
 ax[1].set_ylabel('Bending Moment (N*m)')
 plt.tight_layout()
+plt.savefig(f"{__file__}.png", dpi=300)
 plt.show()
 
 #%% deflection
 # from sympy.integrals.integrals import Integral
 EI = sp.symbols('EI', positive=True)
 
-help(sp.Integral)
+# help(sp.Integral)
 bending_moment_calc=sp.integrate(shear_force, x)
 
 slope_calc=sp.integrate(bending_moment, x)

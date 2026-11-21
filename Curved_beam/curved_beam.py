@@ -1,4 +1,6 @@
 #%%
+import os
+print(os.getcwd())
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -124,7 +126,7 @@ def plot_lever_arms_crown():
     ax.axis('off')
 
     plt.tight_layout()
-    savefig_path = f'img/lever_arms_crown_{LANG}.png'
+    savefig_path = f'plots/lever_arms_crown_{LANG}.png'
     plt.savefig(savefig_path, dpi=300)
     plt.show()
 
